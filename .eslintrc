@@ -1,0 +1,33 @@
+{
+    "rules": {
+        "indent": [
+            2,
+            4
+        ],
+        "quotes": [
+            2,
+            "single"
+        ],
+        "linebreak-style": [
+            2,
+            "unix"
+        ],
+        "semi": [
+            2,
+            "always"
+        ],
+        vars-on-top: 0,
+        func-names: 0,
+        no-param-reassign: 1,
+        strict: [2, "global"],
+        spaced-comment: [0, "always"],
+        no-param-reassign: [1, {"props": true}],
+    },
+    "env": {
+        "node": true
+    },
+    "globals": {
+        include: false
+    },
+    "extends": "airbnb/legacy"
+}
