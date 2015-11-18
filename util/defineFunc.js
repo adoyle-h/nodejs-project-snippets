@@ -1,5 +1,7 @@
 'use strict';
 
+var assert = include('lib/assert');  // eslint-disable-line
+
 /**
  * only for defineFunc
  */
