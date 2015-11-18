@@ -9,6 +9,7 @@
 module.exports = function(gulp, config, LL/*, args*/) {
     gulp.task('lint', function() {
         var eslint = LL.eslint;
+
         return gulp.src([
             './**/*.js',
             '!./bower_components/**',

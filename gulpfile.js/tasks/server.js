@@ -8,7 +8,9 @@
  */
 module.exports = function(gulp, config, LL/*, args*/) {
     gulp.task('server', function() {
-        LL.nodemon({
+        var nodemon = LL.nodemon;
+
+        nodemon({
             script: 'index.js',
             ignore: ['node_modules/*', 'bower_components/*', 'assets/*', 'bin/*', 'doc/*', 'logs/*', 'scripts/*', 'temp/*', 'test/*', 'gulpfile.js'],
             // env: { 'NODE_ENV': 'development' },

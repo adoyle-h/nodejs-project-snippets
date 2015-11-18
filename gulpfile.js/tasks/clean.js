@@ -9,10 +9,12 @@
 module.exports = function(gulp, config, LL/*, args*/) {
     // ATTENTION: 删除日志需要重启服务器，否则新写日志不会创建文件
     gulp.task('clean:log', function() {
+        var clean = LL.clean;
+
         return gulp.src('logs/*', {
             read: false,
         })
-            .pipe(LL.clean());
+            .pipe(clean());
     });
 
     gulp.task('clean', ['clean:log']);
