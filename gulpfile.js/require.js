@@ -11,6 +11,7 @@ module.exports = {
     nodemon: 'gulp-nodemon',
     eslint: 'gulp-eslint',
     mocha: 'gulp-mocha',
+    watch: 'gulp-watch',
     ms: 'ms',
     runSequence: 'run-sequence',
 };
