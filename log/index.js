@@ -7,24 +7,23 @@ var Console = require('./transports/console');
 var config = include('lib/config');
 var util = include('lib/util');
 
-var IS_DEVELOPMENT_ENV = config.util.getEnv('NODE_ENV') === 'development';
-var PROJECT_PATH = Path.resolve('.') + Path.sep;
-var FILE_OPTS = config.get('logger.fileOpts');
-var LEVEL = config.get('logger.level');
+var IS_DEVELOPMENT_ENV;
+var PROJECT_PATH;
+var MESSAGE_CONNECTOR;
 
 var internals = {
     logger: null,
     transports: [],
 };
 
-
 var LEVELS = {
-    debug: 0,
-    info: 1,
+    debug: 4,
+    info: 3,
     warn: 2,
-    error: 3,
-    fatal: 4,
+    error: 1,
+    fatal: 0,
 };
+
 var COLORS = {
     debug: 'cyan',
     info: 'green',
@@ -33,8 +32,19 @@ var COLORS = {
     fatal: 'redBright',
 };
 
+
+function trimPath(filePath) {
+    return filePath.replace(PROJECT_PATH, './');
+}
+
 /**
- * 将目标对象(desc)的 key(property)对应的值，替换成 '[secret]' 或者指定的值(alternative)
+ * 将目标对象(desc)的 key(property)对应的值，替换成默认值或者指定的值(alternative)
+ *
+ * 不同类型的 desc[property] 替换的默认值为：
+ *   - String => '[secret String]'
+ *   - Number => '[secret Number]'
+ *   - Date => '[secret Date]'
+ *   - Object|Array|Buffer => '[secret Object]'
  *
  * @side_effect desc
  * @param  {Object} desc
@@ -48,9 +58,13 @@ function mask(desc, property, alternative) {
 
     if (arguments.length === 2) {
         if (util.isString(val)) {
-            alternative = '[secret]';
+            alternative = '[secret String]';
         } else if (util.isNumber(val)) {
-            alternative = 0;
+            alternative = '[secret Number]';
+        } else if (util.isDate(val)) {
+            alternative = '[secret Date]';
+        } else if (util.isObject(val)) {
+            alternative = '[secret Object]';
         }
     }
 
@@ -82,6 +96,13 @@ function maskMeta(meta, masks) {
 }
 
 /**
+ * 如果 meta 的深度大于一层，不要去修改深层的属性！
+ */
+function rewriteMeta(meta, rewriter) {
+    return rewriter(meta);
+}
+
+/**
  * 修改(增强)元数据
  *
  * @param  {Object} meta          元数据
@@ -89,140 +110,167 @@ function maskMeta(meta, masks) {
  * @method modifyMeta
  */
 function modifyMeta(meta) {
-    var self = this;
-    var $prod = meta.$prod;
-    meta = util.omit(meta, ['$prod']);
+    var $mask = meta.$mask;
+    var $rewriter = meta.$rewriter;
+    var omits = [];
 
-    // 赋值其他 meta 数据
-
-    var error = meta.err || meta.error;
-    if (error && util.isError(error)) {
-        meta.err = error.stack || error.message;
+    if ($mask) {
+        maskMeta(meta, $mask);
+        omits.push('$mask');
     }
 
-    var filename = meta['@file'];
-    meta['@file'] = self.filename;
-    if (filename) meta['@originFile'] = filename.replace(PROJECT_PATH, '');
-
-    // 在生产环境下，遮挡用户敏感信息
-    if (!IS_DEVELOPMENT_ENV && $prod) {
-        maskMeta(meta, $prod.mask);
+    if ($rewriter) {
+        meta = rewriteMeta(meta, $rewriter);
+        omits.push('$rewriter');
     }
 
-    return meta;
+    return util.omit(meta, omits);
 }
 
-function wrapLogger(level) {
-    /**
-     * log 包装函数，用于包装跟业务逻辑相关的数据
-     *
-     * 调用方法：
-     *
-     * @example
-     * logger.info('this is message');
-     *
-     * @example
-     * var meta = {
-     *     a: 1,
-     *     b: 2
-     * };
-     * logger.info(meta);
-     *
-     * @example
-     * logger.info(meta, 'message');
-     * @example
-     * logger.info(meta, 'id= %s', 1);
-     * @example
-     * logger.info(meta, 'object= %j', {a: 1});
-     *
-     * @example
-     * var err = new Error();
-     * logger.error(err);
-     * @example
-     * err.meta = {a: 1, b: 2}   // 添加其他的元数据
-     * logger.error(err);
-     * @example
-     * logger.error(err, 'message');
-     * @example
-     * logger.info(meta, 'id= %s', 1);
-     *
-     * @example
-     * logger.error(meta, error);
-     *
-     * 不支持 callback，因为没什么用
-     *
-     * @param  {String} message     具体写法见 https://github.com/alexei/sprintf.js#sprintfjs
-     * @param  {Any}    params1..N  message 的填充参数
-     * @param  {Object} meta        只支持深度为一层的 object
-     * @method logWrapper
-     */
-    return function logger(/*[meta,] message[, params1, ... paramsN]*/) {
-        var self = this;
-        var arg0 = arguments[0];
-        var message = '(empty message)';
-        var meta = {};
-        var params = [];
-        var error;
+/**
+ * log 参数不限顺序，只要保证 message 在 meta 和 error 后面就行。
+ *
+ * log 如何区分 meta 和 error： error 必须是 Error 的实例；meta 必须是一个 Object。
+ *
+ * 若 error 存在下列字段，会自动被赋值到 meta 中去；且这些字段不会被传入的 meta 所覆盖。
+ *     - meta.errorName: error.name,
+ *     - meta.errorCode: error.code,
+ *     - meta.errorStack: error.stack,
+ *     - meta.errorDetail: error.detail,
+ *
+ * @example
+ * logger.info('this is message');
+ *
+ * @example
+ * var meta = {
+ *     a: 1,
+ *     b: 2
+ * };
+ * logger.info(meta);
+ *
+ * @example
+ * logger.info(meta, 'message');
+ * @example
+ * logger.info(meta, 'id= %s', 1);
+ * @example
+ * logger.info(meta, 'object= %j', {a: 1});
+ *
+ * @example
+ * var err = new Error();
+ * logger.error(err);
+ * @example
+ * err.meta = {a: 1, b: 2}   // 添加其他的元数据
+ * logger.error(err);  // err.meta 会作为 meta 打印出来
+ * @example
+ * logger.error(err, 'extra message');  // err.message 会和 'extra message' 拼接输出。
+ * @example
+ * logger.info(meta, 'id= %s', 1);
+ *
+ * @example
+ * logger.error(meta, error);  // 如果同时存在 meta 和 error.meta 的同名属性，meta 的优先级更高
+ *
+ * @param  {String} message     具体写法见 https://github.com/alexei/sprintf.js#sprintfjs
+ * @param  {Any}    params1..N  message 的填充参数
+ * @param  {Object} meta        只支持深度为一层的 object
+ * @param  {Error}  error       Error 对象
+ * @method log([meta][, error], message[, params1, ... paramsN])
+ * @method log([meta][, error])
+ * @method log(message[, params1, ... paramsN])
+ * @method log([error][, meta][, message[, params1, ... paramsN]])
+ */
+function log() {
+    if (arguments.length === 0) return undefined;
+    var args = Array.prototype.slice.call(arguments);
+    var message;
+    var params;
+    var meta;
+    var error;
+    var preArgs;
 
-        var MESSAGE_CONNECTOR = ' && ';
+    var messageIndex = util.findIndex(args.slice(0, 3), util.isString);
 
-        if (util.isString(arg0)) {
-            message = arg0;
-            params = util.slice(arguments, 1);
-        } else if (util.isError(arg0)) {
-            error = arg0;
-            meta = util.defaults({
-                errorCode: error.code,
-                errorStack: error.stack,
-                errorDetail: error.detail,
-            }, error.meta);
+    if (messageIndex !== -1) {
+        params = args.slice(messageIndex + 1);
+        message = util.vsprintf(args[messageIndex], params);
+        preArgs = args.slice(0, messageIndex);
+    } else {
+        preArgs = args.slice(0, 2);
+    }
 
-            if (arguments.length > 1) {
-                message = arguments[1] + MESSAGE_CONNECTOR + error.message;
-                params = util.slice(arguments, 2);
-            } else {
-                message = error.message;
-            }
-        } else if (util.isObject(arg0)) {
-            meta = arg0;
-            if (arguments.length > 1) {
-                if (util.isError(arguments[1])) {
-                    error = arguments[1];
-                    meta = util.defaults({
-                        errorCode: error.code,
-                        errorStack: error.stack,
-                        errorDetail: error.detail,
-                    }, meta, error.meta);
-
-                    if (arguments.length > 2) {
-                        message = arguments[2] + MESSAGE_CONNECTOR + error.message;
-                        params = util.slice(arguments, 3);
-                    } else {
-                        message = error.message;
-                    }
-                } else {
-                    message = arguments[1];
-                    if (meta.message) message = message + MESSAGE_CONNECTOR + meta.message;
-                    params = util.slice(arguments, 2);
-                }
-            }
-        } else {
-            error = new Error(util.sprintf('logger 参数错误，请仔细阅读注释文档，及时修复。arguments= %j', arguments));
-            /* eslint no-console: 0 */
-            return console.error(error.stack);
+    var arg;
+    while (preArgs.length !== 0) {
+        arg = preArgs.pop();
+        if (util.isError(arg)) {
+            error = arg;
+        } else if (util.isObject(arg)) {
+            meta = arg;
         }
+    }
 
-        message = util.vsprintf(message, params);
+    if (error) {
+        meta = util.defaults({
+            errorName: error.name,
+            errorCode: error.code,
+            errorStack: error.stack,
+            errorDetail: error.detail,
+        }, meta, error.meta);
 
-        if (!meta.$noMeta) {
-            meta = modifyMeta.call(self, meta);
-            self.logger[level](message, meta);
+        if (message) {
+            message = message + MESSAGE_CONNECTOR + error.message;
         } else {
-            self.logger[level](message);
+            message = error.message;
         }
+    }
+
+    message = message || '(empty message)';
+
+    if (meta) {
+        if (IS_DEVELOPMENT_ENV === false) {
+            // 在生产环境下，过滤/改写敏感信息
+            meta = modifyMeta(meta);
+        }
+        this.logger.log(this.level, message, meta);
+    } else {
+        this.logger.log(this.level, message);
+    }
+}
+
+function wrapLog(level) {
+    return function() {
+        return log.apply({
+            logger: this.logger,
+            level: level,
+        }, arguments);
     };
 }
 
+
+function Logger(params) {
+    var logger = this;
+    logger.filename = trimPath(params.filename);
+    logger.logger = params.logger;
+}
+
+util.each(LEVELS, function(_, level) {
+    Logger.prototype[level] = wrapLog(level);
+});
+
+function queryCallback(err, results) {
+    /* eslint no-console: 0 */
+    if (err) return console.error(err);
+    console.log(results);
+}
+
+Logger.prototype.query = function(options, callback) {
+    callback = callback || queryCallback;
+    this.logger.query(options, callback);
+};
+
+Logger.prototype.profile = function(message) {
+    if (message) message = '[Profiling] ' + message;
+    else message = '[Profiling]';
+    this.logger.profile(message);
+};
 
 /**
  * 创建模块专用的 logger，logger 只支持以下方法：
@@ -237,39 +285,49 @@ function wrapLogger(level) {
  * @param  {Object} module           通常用模块全局变量
  * @param  {Srting} module.filename  文件路径
  * @return {Object}                  logger
- * @method create
+ * @method create(module)
  */
-exports.create = function(module) {
-    var loggerWrapper = {
-        filename: module.filename.replace(PROJECT_PATH, ''),
+function create(module) {
+    return new Logger({
+        filename: trimPath(module.filename),
         logger: internals.logger,
-    };
-
-    util.each(LEVELS, function(_, level) {
-        loggerWrapper[level] = wrapLogger(level);
     });
+}
 
-    loggerWrapper.query = function(options, callback) {
-        callback = callback || function(err, results) {
-            /* eslint no-console: 0 */
-            if (err) return console.error(err);
-            console.log(results);
-        };
-        internals.logger.query(options, callback);
-    };
+function getLevels() {
+    if (!internals.logger) return undefined;
+    return LEVELS;
+}
 
-    loggerWrapper.profile = function(message) {
-        if (message) message = '[Profiling] ' + message;
-        else message = '[Profiling]';
-        internals.logger.profile(message);
-    };
+function setLevel(level, transport) {
+    var logger = internals.logger;
+    if (!logger) return undefined;
 
-    return loggerWrapper;
-};
+    var transports = [];
 
-function addFileTransport(level, filePath) {
-    if (LEVELS[LEVEL] > LEVELS[level]) return undefined;
+    if (transport && logger.transports[transport]) {
+        transports.push(logger.transports[transport]);
+    } else {
+        transports = util.keys(logger.transports);
+    }
 
+    util.each(transports, function(transportName) {
+        logger.transports[transportName].level = level;
+    });
+}
+
+function listTransports() {
+    if (!internals.logger) return undefined;
+    return util.keys(internals.logger.transports);
+}
+
+function removeTransport(name) {
+    var logger = internals.logger;
+    if (!logger) return undefined;
+    return logger.remove(logger.transports[name]);
+}
+
+function addFileTransport(level, filePath, fileOpts) {
     internals.transports.push(
         new winston.transports.File({
             logstash: true,
@@ -277,60 +335,61 @@ function addFileTransport(level, filePath) {
             filename: filePath,
             level: level,
             colorize: false,
-            maxsize: util.bytes(FILE_OPTS.get('maxSize')),
-            maxFiles: FILE_OPTS.get('maxFiles'),
-            tailable: FILE_OPTS.get('tailable'),
+            maxsize: util.bytes(fileOpts.maxSize),
+            maxFiles: fileOpts.maxFiles,
+            tailable: fileOpts.tailable,
         })
     );
 }
 
-exports.getLevels = function() {
-    if (!internals.logger) return undefined;
-    return LEVELS;
-};
-
-exports.setLevel = function(level, transport) {
-    if (!internals.logger) return undefined;
-
-    var transports = [];
-
-    if (transport && internals.logger.transports[transport]) {
-        transports.push(internals.logger.transports[transport]);
-    } else {
-        transports = util.keys(internals.logger.transports);
-    }
-
-    util.each(transports, function(transportName) {
-        internals.logger.transports[transportName].level = level;
-    });
-};
-
-exports.listTransport = function() {
-    if (!internals.logger) return undefined;
-    return util.keys(internals.logger.transports);
-};
-
-exports.removeTransport = function(name) {
-    var logger = internals.logger;
-    if (!logger) return undefined;
-    return logger.remove(logger.transports[name]);
-};
-
-exports.init = function() {
+/**
+ * 初始化日志模块
+ *
+ * @param  {Object} params.
+ * @param  {Object} params.fileOpts
+ * @param  {String} params.fileOpts.maxSize   每个文件大小上限，b\kb\mb\gb，大小写不敏感。如 '100MB'
+ * @param  {Number} params.fileOpts.maxFiles  文件数量上限（Rotate 处理）
+ * @param  {Boolean} params.fileOpts.tailable  If true, log files will be rolled based on maxsize and maxfiles, but in ascending order. The filename will always have the most recent log lines. The larger the appended number, the older the log file.
+ * @param  {String} params.messageConnector  err.message 和自定义 message 之间的连接符
+ * @param  {Boolean} params.isDevelopmentEnv  是否是开发环境
+ * @param  {String} params.projectPath  日志目录的父目录，可以是相对路径，也可以是绝对路径
+ * @param  {String} params.level  最低输出日志级别（控制所有日志输出的 level）
+ * @param  {Object} params.files  日志文件保存路径。可用相对路径(相对于当前进程所在目录)或者绝对路径。置为 null，则不生成对应日志文件
+ *                                日志等级由低到高排序如下：
+ * @param  {String|Null} params.files.fatal
+ * @param  {String|Null} params.files.error
+ * @param  {String|Null} params.files.warn
+ * @param  {String|Null} params.files.info
+ * @param  {String|Null} params.files.debug
+ *
+ * @param  {Boolean} params.colorize  终端输出是否显示颜色
+ * @return {[type]}        [description]
+ * @method [name]
+ */
+function init(params) {
     if (internals.logger) return undefined;
 
-    util.each(config.get('logger.files'), function(path, level) {
-        if (!util.isEmpty(path)) {
-            path = Path.resolve(path);
-            addFileTransport(level, path);
+    var LEVEL = params.level;
+    PROJECT_PATH = Path.resolve(params.projectPath) + Path.sep;
+    IS_DEVELOPMENT_ENV = params.isDevelopmentEnv;
+    MESSAGE_CONNECTOR = params.messageConnector;
+    var fileOpts = params.fileOpts;
+
+
+    util.each(params.files, function(path, level) {
+        if ((LEVELS[LEVEL] < LEVELS[level]) || util.isEmpty(path)) {
+            return undefined;
         }
+        var filePath = Path.resolve(PROJECT_PATH, path);
+        addFileTransport(level, filePath, fileOpts);
     });
 
     internals.transports.push(
         new Console({
             level: LEVEL,
-            colorize: config.get('logger.colorize'),
+            colorize: params.colorize,
             timestamp: true,
+            stderrLevel: 'warn',
             levels: LEVELS,
             colors: COLORS,
         })
@@ -340,8 +399,28 @@ exports.init = function() {
         exitOnError: false,
         transports: internals.transports,
         levels: LEVELS,
+        colors: COLORS,
     });
     internals.logger = logger;
-};
+}
 
-exports.init();
+init({
+    fileOpts: config.get('logger.fileOpts'),
+    messageConnector: ' && ',
+    isDevelopmentEnv: process.env.NODE_ENV === 'development',
+    projectPath: process.cwd(),
+    level: config.get('logger.level'),
+    files: config.get('logger.files'),
+    colorize: config.get('logger.colorize'),
+});
+
+
+var Log = {
+    create: create,
+    init: init,
+    removeTransport: removeTransport,
+    listTransports: listTransports,
+    getLevels: getLevels,
+    setLevel: setLevel,
+};
+module.exports = exports = Log;
