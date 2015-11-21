@@ -9,13 +9,9 @@ temp/**
 !temp/.gitkeep
 
 ### Logs
-logs/
+logs/**
+!logs/.gitkeep
 *.log
-
-### Runtime data
-pids
-*.pid
-*.seed
 
 
 # Created by https://www.gitignore.io/api/osx
@@ -51,8 +47,6 @@ Temporary Items
 
 ### Node ###
 # Logs
-logs
-*.log
 npm-debug.log*
 
 # Runtime data
