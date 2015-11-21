@@ -10,7 +10,7 @@
  * @param  {Object}  LL      lazy load require 的第三方库
  * @param  {Object}  args    命令行参数
  */
-module.exports = function(gulp/*, config, LL, args*/) {
+module.exports = function(gulp, config, LL, args) {  // eslint-disable-line
     gulp.task('tasks', function() {
         var tasks = Object.keys(gulp.tasks);
         var task;

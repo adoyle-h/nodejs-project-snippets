@@ -6,8 +6,7 @@
  * @param  {Object}  LL      lazy load require 的第三方库
  * @param  {Object}  args    命令行参数
  */
-module.exports = function(gulp, config, LL/*, args*/) {
-    // ATTENTION: 删除日志需要重启服务器，否则新写日志不会创建文件
+module.exports = function(gulp, config, LL, args) {  // eslint-disable-line
     gulp.task('clean:log', function() {
         var clean = LL.clean;
 

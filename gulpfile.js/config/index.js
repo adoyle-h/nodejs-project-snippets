@@ -5,7 +5,22 @@ var config = {
         src: './src',
         dest: './public',
     },
+    /**
+     * 每个 task 必须至少存在以下字段：
+     *   - src: 起始路径
+     *   - dest: 目标路径
+     */
     tasks: {
+        lint: {
+            src: [
+                './**/*.js',
+                '!./bower_components/**',
+                '!./node_modules/**',
+                '!./assets/**',
+                '!./temp/**',
+            ],
+        },
+
         watch: {
 
         },
