@@ -28,6 +28,7 @@
     "node": ""
   },
   "dependencies": {
+    "better-console": "^0.2.4",
     "bytes": "^2.1.0",
     "cli-color": "^1.1.0",
     "config": "^1.16.0",
