@@ -15,6 +15,9 @@ test/config/**
 !test/config/index.js
 !test/config/default.js
 
+gulpfile.js/config/**
+!gulpfile.js/config/index.js
+!gulpfile.js/config/default.js
 
 ### Logs
 logs/**
