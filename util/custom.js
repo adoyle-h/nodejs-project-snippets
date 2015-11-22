@@ -16,6 +16,12 @@ function idle() {}
 module.exports = function(util) {
     util.mixin({
         /**
+         * 获取项目目录的绝对路径，注意本文件在不同路径下需要进行相应的修改
+         */
+        getProjectDir: util.memoize(function() {
+            return Path.resolve(__dirname, '../');
+        }),
+        /**
          * empty function. Idle ;-)
          */
         idle: idle,
@@ -26,12 +32,6 @@ module.exports = function(util) {
                 callback.apply(this, arguments);
             };
         },
-        /**
-         * 获取项目目录的绝对路径
-         */
-        getProjectDir: util.memoize(function() {
-            return Path.resolve(__dirname, '../');
-        }),
         getTodayStartTime: function(now) {
             if (!now) now = new Date();
             var timezoneOffset = now.getTimezoneOffset() * ONE_MINUTE;
