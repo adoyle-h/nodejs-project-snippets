@@ -3,6 +3,9 @@
 var Path = require('path');
 var winston = require('winston');
 var PrettyError = require('pretty-error');
+
+var util = include('lib/util');
+
 var pe = new PrettyError();
 
 var PROJECT_ROOT = process.cwd();
@@ -82,7 +85,6 @@ pe.appendStyle({
     },
 });
 
-var util = include('lib/util');
 var Transport = winston.Transport;
 
 function Console(opts) {

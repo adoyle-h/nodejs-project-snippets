@@ -377,7 +377,7 @@ function init(params) {
 
 
     util.each(params.files, function(path, level) {
-        if ((LEVELS[LEVEL] < LEVELS[level]) || util.isEmpty(path)) {
+        if (util.isEmpty(path)) {
             return undefined;
         }
         var filePath = Path.resolve(PROJECT_PATH, path);
