@@ -1,12 +1,20 @@
 !.gitkeep
 bower_components/
 node_modules/
-config/**
-!config/default*
 upload/**
 !upload/.gitkeep
 temp/**
 !temp/.gitkeep
+
+### Config
+
+config/**
+!config/default*
+
+test/config/**
+!test/config/index.js
+!test/config/default.js
+
 
 ### Logs
 logs/**
