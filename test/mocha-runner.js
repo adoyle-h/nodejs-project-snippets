@@ -1,6 +1,6 @@
 'use strict';
 
-require('../require');
+require('../include');
 var Path = require('path');
 var Mocha = require('mocha');
 

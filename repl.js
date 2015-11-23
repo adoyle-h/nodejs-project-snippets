@@ -1,6 +1,6 @@
 'use strict';
 
-var include = require('./require').include;
+var include = require('./include').include;
 var repl = include('lib/_repl');
 
 var contents = {

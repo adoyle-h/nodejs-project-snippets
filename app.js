@@ -1,6 +1,6 @@
 'use strict';
 
-require('./require');
+require('./include');
 var config = include('lib/config');
 var util = include('lib/util');
 var logger = include('lib/log').create(module);
