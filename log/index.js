@@ -8,33 +8,30 @@ var config = include('lib/config');
 var util = include('lib/util');
 
 var IS_DEVELOPMENT_ENV;
-var PROJECT_PATH;
+var PROJECT_DIR;
 var MESSAGE_CONNECTOR;
+
+var Log = {
+    LOG_DIR: null,
+    PROJECT_DIR: null,
+    create: create,
+    init: init,
+    removeTransport: removeTransport,
+    listTransports: listTransports,
+    getLevels: getLevels,
+    setLevel: setLevel,
+};
 
 var internals = {
     logger: null,
     transports: [],
 };
 
-var LEVELS = {
-    debug: 4,
-    info: 3,
-    warn: 2,
-    error: 1,
-    fatal: 0,
-};
-
-var COLORS = {
-    debug: 'cyan',
-    info: 'green',
-    warn: 'yellow',
-    error: 'red',
-    fatal: 'redBright',
-};
-
+var LEVELS;
+var COLORS;
 
 function trimPath(filePath) {
-    return filePath.replace(PROJECT_PATH, './');
+    return filePath.replace(PROJECT_DIR, './');
 }
 
 /**
@@ -244,10 +241,15 @@ function wrapLog(level) {
     };
 }
 
-
+/**
+ * @param  {Object} params
+ * @param  {String} params.filename 文件名
+ * @param  {Object} params.logger  winston logger
+ * @method Logger
+ */
 function Logger(params) {
     var logger = this;
-    logger.filename = trimPath(params.filename);
+    logger.filename = params.filename;
     logger.logger = params.logger;
 }
 
@@ -282,8 +284,8 @@ Logger.prototype.profile = function(message) {
  * - logger.query(opts[, callback])
  * - logger.profile([message=''])
  *
- * @param  {Object} module           通常用模块全局变量
- * @param  {Srting} module.filename  文件路径
+ * @param  {Object} module           通常用模块全局变量 `module`
+ * @param  {Srting} module.filename  此 module 的文件路径，绝对路径。
  * @return {Object}                  logger
  * @method create(module)
  */
@@ -347,30 +349,44 @@ function addFileTransport(level, filePath, fileOpts) {
  *
  * @param  {Object} params.
  * @param  {Object} params.fileOpts
- * @param  {String} params.fileOpts.maxSize   每个文件大小上限，b\kb\mb\gb，大小写不敏感。如 '100MB'
+ * @param  {String} params.fileOpts.maxSize  每个文件大小上限，b\kb\mb\gb，大小写不敏感。如 '100MB'
  * @param  {Number} params.fileOpts.maxFiles  文件数量上限（Rotate 处理）
  * @param  {Boolean} params.fileOpts.tailable  If true, log files will be rolled based on maxsize and maxfiles, but in ascending order. The filename will always have the most recent log lines. The larger the appended number, the older the log file.
  * @param  {String} params.messageConnector  err.message 和自定义 message 之间的连接符
- * @param  {Boolean} params.isDevelopmentEnv  是否是开发环境
- * @param  {String} params.projectPath  日志目录的父目录，可以是相对路径，也可以是绝对路径
+ * @param  {Boolean} params.isDevelopmentEnv  是否是开发环境。开发环境会输出所有原本的日志，而非开发环境会使用 mask 和 rewrite 会隐藏敏感数据
+ * @param  {String} params.projectDir  项目路径根目录，可以是相对路径，也可以是绝对路径
+ * @param  {String} [params.logDir='<params.projectDir>/logs']  日志目录，可以是相对路径，也可以是绝对路径。
+ *                                                              默认是项目根目录下的 logs 目录。
  * @param  {String} params.level  最低输出日志级别（控制所有日志输出的 level）
- * @param  {Object} params.files  日志文件保存路径。可用相对路径(相对于当前进程所在目录)或者绝对路径。置为 null，则不生成对应日志文件
- *                                日志等级由低到高排序如下：
- * @param  {String|Null} params.files.fatal
- * @param  {String|Null} params.files.error
- * @param  {String|Null} params.files.warn
- * @param  {String|Null} params.files.info
- * @param  {String|Null} params.files.debug
+ * @param  {Object<String, Number>} params.LEVELS  日志等级(level)以及它的权重
+ * @param  {Object<String, String>} params.COLORS  不同 level 对应的颜色，可以使用已下颜色之一：
+ *                                                 前景色: ['black', 'red', 'green', 'yellow', 'blue', 'magenta', 'cyan', 'white', 'Bright', 'blackBright', 'redBright', 'greenBright', 'yellowBright', 'blueBright', 'magentaBright', 'cyanBright', 'whiteBright']
+ *                                                 背景色: ['bgBlack', 'bgRed', 'bgGreen', 'bgYellow', 'bgBlue', 'bgMagenta', 'bgCyan', 'bgWhite', 'variants', 'bgBlackBright', 'bgRedBright', 'bgGreenBright', 'bgYellowBright', 'bgBlueBright', 'bgMagentaBright', 'bgCyanBright', 'bgWhiteBright']
+ * @param  {Object} params.files
+ * @param  {String|Null} params.files.<level>  不同 level 的日志文件保存路径。可用相对路径(相对于当前进程所在目录)或者绝对路径。置为 null，则不生成对应日志文件
  *
  * @param  {Boolean} params.colorize  终端输出是否显示颜色
- * @return {[type]}        [description]
- * @method [name]
+ * @return {Null}
+ * @method init(params)
  */
 function init(params) {
     if (internals.logger) return undefined;
 
+    LEVELS = params.LEVELS;
+    COLORS = params.COLORS;
+
     var LEVEL = params.level;
-    PROJECT_PATH = Path.resolve(params.projectPath) + Path.sep;
+    var logDir;
+    PROJECT_DIR = Path.resolve(params.projectDir) + Path.sep;
+    Log.PROJECT_DIR = PROJECT_DIR;
+
+    if (params.logDir) {
+        logDir = Path.resolve(params.logDir) + Path.sep;
+    } else {
+        logDir = Path.resolve(params.projectDir, 'logs') + Path.sep;
+    }
+    Log.LOG_DIR = logDir;
+
     IS_DEVELOPMENT_ENV = params.isDevelopmentEnv;
     MESSAGE_CONNECTOR = params.messageConnector;
     var fileOpts = params.fileOpts;
@@ -380,7 +396,7 @@ function init(params) {
         if (util.isEmpty(path)) {
             return undefined;
         }
-        var filePath = Path.resolve(PROJECT_PATH, path);
+        var filePath = Path.resolve(logDir, path);
         addFileTransport(level, filePath, fileOpts);
     });
 
@@ -405,22 +421,28 @@ function init(params) {
 }
 
 init({
+    LEVELS: {
+        debug: 4,
+        info: 3,
+        warn: 2,
+        error: 1,
+        fatal: 0,
+    },
+    COLORS: {
+        debug: 'cyan',
+        info: 'green',
+        warn: 'yellow',
+        error: 'red',
+        fatal: 'redBright',
+    },
     fileOpts: config.get('logger.fileOpts'),
     messageConnector: ' && ',
     isDevelopmentEnv: process.env.NODE_ENV === 'development',
-    projectPath: process.cwd(),
+    projectDir: process.cwd(),
     level: config.get('logger.level'),
     files: config.get('logger.files'),
     colorize: config.get('logger.colorize'),
 });
 
 
-var Log = {
-    create: create,
-    init: init,
-    removeTransport: removeTransport,
-    listTransports: listTransports,
-    getLevels: getLevels,
-    setLevel: setLevel,
-};
 module.exports = exports = Log;
