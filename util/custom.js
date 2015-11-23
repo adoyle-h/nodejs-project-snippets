@@ -15,12 +15,12 @@ function idle() {}
  */
 module.exports = function(util) {
     util.mixin({
-        /**
-         * 获取项目目录的绝对路径，注意本文件在不同路径下需要进行相应的修改
-         */
-        getProjectDir: util.memoize(function() {
-            return Path.resolve(__dirname, '../');
-        }),
+        // /**
+        //  * 获取项目目录的绝对路径，注意本文件在不同路径下需要进行相应的修改
+        //  */
+        // getProjectDir: util.memoize(function() {
+        //     return Path.resolve(__dirname, '../');
+        // }),
         /**
          * empty function. Idle ;-)
          */
@@ -47,8 +47,7 @@ module.exports = function(util) {
          */
         upperCamelCase: function(str) {
             str = util.camelCase(str);
-            str = util.capitalize(str);
-            return str;
+            return util.capitalize(str);
         },
         /**
          * 检查并返回当前 util 和 newUtils 中是否有重复的函数
