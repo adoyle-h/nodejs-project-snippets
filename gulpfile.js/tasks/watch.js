@@ -6,7 +6,13 @@
  * @param  {Object}  LL      lazy load require 的第三方库
  * @param  {Object}  args    命令行参数
  */
-module.exports = function(gulp, config, LL, args) {  // eslint-disable-line
+module.exports = function(gulp, config, LL, args) {  // eslint-disable-line no-unused-vars
+    gulp.task('watch:lint', function() {
+        gulp.watch(config.get('tasks.lint.src'), ['lint']);
+    });
+
+    gulp.task('watch', ['watch:lint']);
+
     // var Path = LL.Path;
     // var watch = LL.watch;
 

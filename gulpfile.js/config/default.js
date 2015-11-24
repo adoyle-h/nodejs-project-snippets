@@ -13,11 +13,8 @@ var config = {
     tasks: {
         lint: {
             src: [
-                './**/*.js',
-                '!./bower_components/**',
                 '!./node_modules/**',
-                '!./assets/**',
-                '!./temp/**',
+                './**/*.js',
             ],
         },
 

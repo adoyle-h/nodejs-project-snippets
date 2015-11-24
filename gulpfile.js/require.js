@@ -10,6 +10,7 @@ module.exports = {
     changed: 'gulp-changed',
     nodemon: 'gulp-nodemon',
     eslint: 'gulp-eslint',
+    cached: 'gulp-cached',
     mocha: 'gulp-mocha',
     watch: 'gulp-watch',
     ms: 'ms',
