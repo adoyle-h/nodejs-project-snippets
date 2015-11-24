@@ -2,11 +2,13 @@
 
 var Path = require('path');
 var winston = require('winston');
-var Console = require('./transports/console');
 var nodeUtil = require('util');
 var util = require('lodash');
 var vsprintf = require('sprintf-js').vsprintf;
 var bytes = require('bytes');
+
+var Console = require('./transports/console');
+var createPE = require('./pe').createPE;
 
 var config = include('lib/config');
 
@@ -405,6 +407,11 @@ function init(params) {
             stderrLevel: 'warn',
             levels: LEVELS,
             colors: COLORS,
+            pe: createPE({
+                projectDir: PROJECT_DIR,
+                themeColor: 'red',
+                colorize: params.colorize,
+            }),
         })
     );
 
