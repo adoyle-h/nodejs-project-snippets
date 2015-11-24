@@ -13,19 +13,19 @@ module.exports = {
         },
         colorize: true,  // 终端输出是否显示颜色
         level: 'debug',  // 最低输出日志级别（控制所有日志输出的 level）
-        files: {  // 日志文件保存路径。可用相对路径(相对于当前进程所在目录)或者绝对路径。置为 null，则不生成对应日志文件
-            // 日志等级由低到高排序如下：
-            // 日志会记录当前级别以及其以上级别的日志输出，所以 debug 级别实际输出的是所有级别的日志。
-            fatal: null,
-            error: './logs/error.log',
-            warn: null,
+        logDir: null,  // 日志保存目录，可以是相对路径（相对于当前进程所在路径），也可以是绝对路径。如果置为 null，则使用当前进程所在路径。
+        files: {  // 日志文件保存路径。可用相对路径（相对于 logDir），或者绝对路径。如果置为 null，则不生成对应日志文件
+            // 日志等级由低到高排序如下。日志会记录当前级别以及其以上级别的日志输出，所以 debug 级别实际输出的是所有级别的日志。
+            debug: 'all.log',
             info: null,
-            debug: './logs/all.log',
+            warn: null,
+            error: 'error.log',
+            fatal: null,
         },
         fileOpts: { // 日志文件选项
             maxSize: '100MB',   // b\kb\mb\gb，大小写不敏感
             maxFiles: 10,    // 文件数量上限（Rotate 处理）
-            tailable: true,  // If true, log files will be rolled based on maxsize and maxfiles, but in ascending order. The filename will always have the most recent log lines. The larger the appended number, the older the log file.
+            tailable: true,  // 如果为 true，最新的日志在编号最小的文件里。否则相反。
         },
     },
     tmpDir: 'upload',    // 如果你指定到项目目录下的其他路径，记得不要把临时文件提交到版本库

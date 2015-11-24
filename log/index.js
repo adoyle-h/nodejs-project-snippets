@@ -10,25 +10,13 @@ var util = include('lib/util');
 var IS_DEVELOPMENT_ENV;
 var PROJECT_DIR;
 var MESSAGE_CONNECTOR;
-
-var Log = {
-    LOG_DIR: null,
-    PROJECT_DIR: null,
-    create: create,
-    init: init,
-    removeTransport: removeTransport,
-    listTransports: listTransports,
-    getLevels: getLevels,
-    setLevel: setLevel,
-};
+var LEVELS;
+var COLORS;
 
 var internals = {
     logger: null,
     transports: [],
 };
-
-var LEVELS;
-var COLORS;
 
 function trimPath(filePath) {
     return filePath.replace(PROJECT_DIR, './');
@@ -58,10 +46,10 @@ function mask(desc, property, alternative) {
             alternative = '[secret String]';
         } else if (util.isNumber(val)) {
             alternative = '[secret Number]';
-        } else if (util.isDate(val)) {
-            alternative = '[secret Date]';
         } else if (util.isObject(val)) {
             alternative = '[secret Object]';
+        } else if (util.isDate(val)) {
+            alternative = '[secret Date]';
         }
     }
 
@@ -253,15 +241,15 @@ function Logger(params) {
     logger.logger = params.logger;
 }
 
-util.each(LEVELS, function(_, level) {
-    Logger.prototype[level] = wrapLog(level);
-});
-
 function queryCallback(err, results) {
     /* eslint no-console: 0 */
     if (err) return console.error(err);
     console.log(results);
 }
+
+Logger.prototype.stream = function(options) {
+    return this.logger.stream(options);
+};
 
 Logger.prototype.query = function(options, callback) {
     callback = callback || queryCallback;
@@ -275,7 +263,7 @@ Logger.prototype.profile = function(message) {
 };
 
 /**
- * 创建模块专用的 logger，logger 只支持以下方法：
+ * 创建文件专用的 logger，logger 只支持以下方法：
  * - logger.debug
  * - logger.info
  * - logger.warn
@@ -350,20 +338,22 @@ function addFileTransport(level, filePath, fileOpts) {
  * @param  {Object} params.
  * @param  {Object} params.fileOpts
  * @param  {String} params.fileOpts.maxSize  每个文件大小上限，b\kb\mb\gb，大小写不敏感。如 '100MB'
- * @param  {Number} params.fileOpts.maxFiles  文件数量上限（Rotate 处理）
- * @param  {Boolean} params.fileOpts.tailable  If true, log files will be rolled based on maxsize and maxfiles, but in ascending order. The filename will always have the most recent log lines. The larger the appended number, the older the log file.
+ * @param  {Number} params.fileOpts.maxFiles  文件数量上限，轮换（Rotate）处理
+ * @param  {Boolean} params.fileOpts.tailable  如果为 true，最新的日志在编号最小的文件里。否则相反。
  * @param  {String} params.messageConnector  err.message 和自定义 message 之间的连接符
  * @param  {Boolean} params.isDevelopmentEnv  是否是开发环境。开发环境会输出所有原本的日志，而非开发环境会使用 mask 和 rewrite 会隐藏敏感数据
- * @param  {String} params.projectDir  项目路径根目录，可以是相对路径，也可以是绝对路径
- * @param  {String} [params.logDir='<params.projectDir>/logs']  日志目录，可以是相对路径，也可以是绝对路径。
- *                                                              默认是项目根目录下的 logs 目录。
+ * @param  {String} params.projectDir  项目路径根目录，可以是绝对路径，也可以是相对路径（相对于当前进程所在路径）
+ * @param  {String} [params.logDir='<params.projectDir>/logs']  日志保存目录，可以是绝对路径，也可以是相对路径（相对于 projectDir）
+ *                                                              默认是项目根目录（即 projectDir）下的 logs 目录。
  * @param  {String} params.level  最低输出日志级别（控制所有日志输出的 level）
- * @param  {Object<String, Number>} params.LEVELS  日志等级(level)以及它的权重
+ * @param  {Object<String, Number>} params.LEVELS  日志等级(level)以及它的权重。权重最小为 0，最大无上限。
+ *                                                 权重值越大，等级越低，紧急程度越低，如 debug 的权重应该高于 error。
+ *                                                 为何是这奇葩的顺序？具体见 [winston](https://github.com/winstonjs/winston/commit/fb9eec0)
  * @param  {Object<String, String>} params.COLORS  不同 level 对应的颜色，可以使用已下颜色之一：
  *                                                 前景色: ['black', 'red', 'green', 'yellow', 'blue', 'magenta', 'cyan', 'white', 'Bright', 'blackBright', 'redBright', 'greenBright', 'yellowBright', 'blueBright', 'magentaBright', 'cyanBright', 'whiteBright']
  *                                                 背景色: ['bgBlack', 'bgRed', 'bgGreen', 'bgYellow', 'bgBlue', 'bgMagenta', 'bgCyan', 'bgWhite', 'variants', 'bgBlackBright', 'bgRedBright', 'bgGreenBright', 'bgYellowBright', 'bgBlueBright', 'bgMagentaBright', 'bgCyanBright', 'bgWhiteBright']
  * @param  {Object} params.files
- * @param  {String|Null} params.files.<level>  不同 level 的日志文件保存路径。可用相对路径(相对于当前进程所在目录)或者绝对路径。置为 null，则不生成对应日志文件
+ * @param  {String|Null} params.files.<level>  不同 level 的日志文件保存路径。可用相对路径(相对于 logDir)或者绝对路径。置为 null，则不生成对应日志文件
  *
  * @param  {Boolean} params.colorize  终端输出是否显示颜色
  * @return {Null}
@@ -378,19 +368,23 @@ function init(params) {
     var LEVEL = params.level;
     var logDir;
     PROJECT_DIR = Path.resolve(params.projectDir) + Path.sep;
-    Log.PROJECT_DIR = PROJECT_DIR;
+    exports.PROJECT_DIR = PROJECT_DIR;
 
     if (params.logDir) {
-        logDir = Path.resolve(params.logDir) + Path.sep;
+        logDir = Path.resolve(PROJECT_DIR, params.logDir) + Path.sep;
     } else {
-        logDir = Path.resolve(params.projectDir, 'logs') + Path.sep;
+        logDir = Path.resolve(PROJECT_DIR, 'logs') + Path.sep;
     }
-    Log.LOG_DIR = logDir;
+    exports.LOG_DIR = logDir;
 
     IS_DEVELOPMENT_ENV = params.isDevelopmentEnv;
     MESSAGE_CONNECTOR = params.messageConnector;
     var fileOpts = params.fileOpts;
 
+    // Logger wrapper add methods
+    util.each(LEVELS, function(_, level) {
+        Logger.prototype[level] = wrapLog(level);
+    });
 
     util.each(params.files, function(path, level) {
         if (util.isEmpty(path)) {
@@ -439,10 +433,19 @@ init({
     messageConnector: ' && ',
     isDevelopmentEnv: process.env.NODE_ENV === 'development',
     projectDir: process.cwd(),
+    logDir: config.get('logger.logDir'),
     level: config.get('logger.level'),
     files: config.get('logger.files'),
     colorize: config.get('logger.colorize'),
 });
 
 
+var Log = {
+    create: create,
+    init: init,
+    removeTransport: removeTransport,
+    listTransports: listTransports,
+    getLevels: getLevels,
+    setLevel: setLevel,
+};
 module.exports = exports = Log;
