@@ -2,8 +2,8 @@
 
 var REPL = require('repl');
 var shell = require('shelljs');
-
-var util = include('lib/util');
+var util = require('lodash');
+var nodeUtil = require('util');
 
 module.exports = function repl(opts) {
     opts = util.defaultsDeep(opts, {
@@ -16,7 +16,7 @@ module.exports = function repl(opts) {
         input: process.stdin,
         output: process.stdout,
         useColors: true,
-        writer: util.inspect,
+        writer: nodeUtil.inspect,
     });
 
     var r1;
