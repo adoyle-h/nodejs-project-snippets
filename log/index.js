@@ -3,9 +3,12 @@
 var Path = require('path');
 var winston = require('winston');
 var Console = require('./transports/console');
+var nodeUtil = require('util');
+var util = require('lodash');
+var vsprintf = require('sprintf-js').vsprintf;
+var bytes = require('bytes');
 
 var config = include('lib/config');
-var util = include('lib/util');
 
 var IS_DEVELOPMENT_ENV;
 var PROJECT_DIR;
@@ -176,7 +179,7 @@ function log() {
 
     if (messageIndex !== -1) {
         params = args.slice(messageIndex + 1);
-        message = util.vsprintf(args[messageIndex], params);
+        message = vsprintf(args[messageIndex], params);
         preArgs = args.slice(0, messageIndex);
     } else {
         preArgs = args.slice(0, 2);
@@ -185,7 +188,7 @@ function log() {
     var arg;
     while (preArgs.length !== 0) {
         arg = preArgs.pop();
-        if (util.isError(arg)) {
+        if (nodeUtil.isError(arg)) {
             error = arg;
         } else if (util.isObject(arg)) {
             meta = arg;
@@ -325,7 +328,7 @@ function addFileTransport(level, filePath, fileOpts) {
             filename: filePath,
             level: level,
             colorize: false,
-            maxsize: util.bytes(fileOpts.maxSize),
+            maxsize: bytes(fileOpts.maxSize),
             maxFiles: fileOpts.maxFiles,
             tailable: fileOpts.tailable,
         })

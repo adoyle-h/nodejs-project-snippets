@@ -3,8 +3,11 @@
 var Path = require('path');
 var winston = require('winston');
 var PrettyError = require('pretty-error');
-
-var util = include('lib/util');
+var vsprintf = require('sprintf-js').vsprintf;
+var sprintf = require('sprintf-js').sprintf;
+var util = require('lodash');
+var utilColors = require('cli-color');
+var nodeUtil = require('util');
 
 var pe = new PrettyError();
 
@@ -103,7 +106,7 @@ function Console(opts) {
 
     util.extend(self, opts);
 }
-util.inherits(Console, Transport);
+nodeUtil.inherits(Console, Transport);
 
 Console.prototype.name = 'Console';
 
@@ -141,7 +144,7 @@ Console.prototype.log = function(level, msg, meta, callback) {
     if (self.timestamp) {
         format = '[%s] ' + format;
         var d = new Date();
-        var localeTimeString = util.sprintf(
+        var localeTimeString = sprintf(
             '%d-%02d-%02d %02d:%02d:%02d.%03d',
             d.getFullYear(), d.getMonth() + 1, d.getDate(),
             d.getHours(), d.getMinutes(), d.getSeconds(), d.getMilliseconds()
@@ -150,10 +153,10 @@ Console.prototype.log = function(level, msg, meta, callback) {
     }
 
     if (self.colorize) {
-        format = util.colors[self.colors[level]](format);
+        format = utilColors[self.colors[level]](format);
     }
 
-    output = util.vsprintf(format, args);
+    output = vsprintf(format, args);
 
     var levels = self.levels;
     if (levels[level] <= levels[self.stderrLevel]) {
