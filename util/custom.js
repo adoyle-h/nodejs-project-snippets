@@ -1,7 +1,6 @@
 'use strict';
 
 var ms = require('ms');
-var assert = include('lib/assert');
 
 var ONE_MINUTE = ms('1m');
 var ONE_DAY = ms('1d');
@@ -60,12 +59,9 @@ module.exports = function(util) {
         /**
          * 打印出函数实现代码
          */
-        printFunction: util.defineFunc([{
-            message: 'func',
-            schema: assert.func().required(),
-        }], function(func) {
+        printFunction: function(func) {
             /* eslint no-console: 0*/
             console.log(func.toString());
-        }),
+        },
     });
 };
