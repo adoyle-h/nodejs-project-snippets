@@ -1,7 +1,5 @@
 'use strict';
 
-var fs = require('fs');
-var Path = require('path');
 var ms = require('ms');
 var assert = include('lib/assert');
 
@@ -68,71 +66,6 @@ module.exports = function(util) {
         }], function(func) {
             /* eslint no-console: 0*/
             console.log(func.toString());
-        }),
-        /**
-         * 遍历目录下的文件
-         */
-        traverseFilesSync: util.defineFunc([{
-            message: 'dirPath',
-            schema: assert.string().required()
-                .notes('目录的绝对路径或者相对路径'),
-        }, {
-            message: 'iteratee',
-            schema: assert.func().required()
-                .notes('函数签名: void iteratee(filename)')
-                .notes('注意，iteratee 必须是同步函数'),
-        }, {
-            message: 'opts',
-            schema: assert.object().keys({
-                avoidFiles: assert.array().items(assert.string()).default([])
-                    .notes('不被遍历的文件名'),
-                recursive: assert.boolean().default(false)
-                    .notes('是否遍历子目录'),
-                extname: assert.string().default('.js')
-                    .notes('被遍历的文件后缀'),
-                format: assert.string().default('filename')
-                    .valid(['filename', 'full', 'relative'])
-                    .notes('iteratee(filename) 中的 filename 的输出格式')
-                    .notes('filename，输出文件名(带后缀)')
-                    .notes('full，输出绝对路径')
-                    .notes('relative，输出相对路径'),
-            }).default(),
-        }], function(dirPath, iteratee, opts, originPath) {
-            var avoidFiles = opts.avoidFiles;
-            var recursive = opts.recursive;
-            var extname = opts.extname;
-
-            if (arguments.length === 3) {
-                originPath = Path.resolve(dirPath);
-            }
-
-            var getOutput;
-            if (opts.format === 'filename') {
-                getOutput = function(filename) {
-                    return filename;
-                };
-            } else if (opts.format === 'relative') {
-                getOutput = function(filename) {
-                    var curPath = Path.resolve(dirPath, filename);
-                    return Path.relative(originPath, curPath);
-                };
-            } else {
-                getOutput = function(filename) {
-                    return Path.resolve(dirPath, filename);
-                };
-            }
-
-            fs.readdirSync(dirPath).forEach(function(filename) {
-                var filePath = Path.join(dirPath, filename);
-                if (recursive && fs.statSync(filePath).isDirectory()) {
-                    return util.traverseFilesSync(filePath, iteratee, opts, originPath);
-                }
-
-                if (Path.extname(filename) === extname &&
-                    !util.contains(avoidFiles, filename)) {
-                    iteratee(getOutput(filename));
-                }
-            });
         }),
     });
 };
