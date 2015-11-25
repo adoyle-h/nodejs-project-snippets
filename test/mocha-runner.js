@@ -28,26 +28,11 @@ function configMocha(mocha) {
     if (config.get('asyncOnly')) mocha.asyncOnly();
 }
 
-function getTestCaseFiles(path) {
-    var files = [];
-    var avoidFiles = ['config.js', 'config.sample.js', 'globals.js', 'init.js', 'mocha-runner.js'];
-
-    util.traverseFilesSync(path, function(filename) {
-        files.push(filename);
-    }, {
-        avoidFiles: avoidFiles,
-        recursive: true,
-    });
-
-    if (config.get('sort')) files.sort();
-
-    return files;
-}
-
-function addTestCase(path) {
-    var files = getTestCaseFiles(path);
-    files.forEach(function(file) {
-        mocha.addFile(file);
+function addTestCase(directory) {
+    util.walk(directory, function(filepath, stats) {
+        if (stats.isFile()) {
+            mocha.addFile(filepath);
+        }
     });
 }
 

@@ -16,6 +16,6 @@ module.exports = {
     invert: false,                      // true or false
     asyncOnly: false,                   // true or false
     noColors: false,                    // true or false
-    sort: false,                        // test files sorted by file name. true or false
+    // sort: false,                        // test files sorted by file name. true or false
     recursive: true,                    // true or false
 };
