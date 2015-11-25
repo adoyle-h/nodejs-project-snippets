@@ -15,6 +15,7 @@ module.exports = function(util) {
     util.mixin(util.pick(require('sprintf-js'), ['sprintf', 'vsprintf']));
 
     util.mixin({
+        walk: require('walkdir'),
         // 字符串颜色转换
         colors: require('cli-color'),
         // see https://github.com/visionmedia/bytes.js
