@@ -1,4 +1,5 @@
 {
+    "root": true,
     "rules": {
         "indent": [
             2,
@@ -22,6 +23,10 @@
         strict: [2, "global"],
         spaced-comment: [0, "always"],
         no-param-reassign: [1, {"props": true}],
+        no-console: 2,
+        no-shadow: 0,
+        dot-notation: 1,
+        no-extra-parens: 1,
     },
     "env": {
         "node": true
