@@ -61,7 +61,7 @@
 
 - 思路/特性: 将 gulp 任务拆分成各个单元，每个单元集合功能类似的子任务。一个单元完成其所有子任务。也能够单独调用子任务。
 - 主要文件: gulpfile.js/
-- 依赖: 无
+- 依赖: sub_config
 - 第三方依赖: npm i --save-dev minimist gulp, 其他第三方依赖见 gulpfile.js/require.js
 
 建议放置在项目根目录下
@@ -74,13 +74,15 @@
     - 自动检测是否有重名函数，帮助整合各个 util 函数。
     - 取自己所需的，不要的可以轻松移除。
 - 主要文件: util/
-- 依赖: 无
-- 第三方依赖: npm i --save lodash, 其他
+- 依赖: include, assert
+- 第三方依赖: npm i --save lodash, 其他第三方依赖见 util/third_party.js
 
 ### 测试（test）
 
 - 目的: 插件化测试套件，分层测试（单元测试、集成测试、端到端测试），
 - 主要文件: test/
+- 依赖: sub_config(可选)
+- 第三方依赖: npm i --save lodash walkdir, npm i --save-dev mocha should chai
 
 建议放置在项目根目录下
 
@@ -132,6 +134,22 @@
 - 依赖: 无
 - 第三方依赖: 无
 
-## 提意见
+## 版本（Version）
 
-欢迎在 issue 里提意见或者提 BUG
+本项目遵循 [Semver 2.0.0][Semver] 规则
+
+## 反馈问题或建议（Bug & Suggestion）
+
+欢迎使用 [Issue][] 提意见或者反馈 BUG
+
+## 如何做贡献（Contributing）
+
+本项目不接受 Pull Request，如果你有什么好的想法，或者改进的建议，请使用 [Issue][] 与我探讨。
+
+其余修改请 fork 本项目，打造属于你自己的 NodeJS Project Snippets 吧。
+
+
+<!-- 链接 -->
+
+[Semver]: http://semver.org/lang/zh-CN/
+[Issue]: https://github.com/adoyle-h/nodejs-project-snippets/issues
