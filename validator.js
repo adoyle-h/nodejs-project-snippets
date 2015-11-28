@@ -10,9 +10,8 @@ v.addValidators = function(validators) {
 };
 
 v.addValidator = function(validator, key) {
-    /* eslint no-console: 0 */
     if (v[key] !== undefined) {
-        return console.warn('Warning: "' + key + '" has been added.');
+        throw new Error('[Validator] key: ' + key + '" has existed.');
     }
     v[key] = util.constant(validator);
 };
