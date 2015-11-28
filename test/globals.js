@@ -3,15 +3,13 @@
  */
 'use strict';
 
-var path = require('path');
 var chai = require('chai');
 
 // side-effect
 require('should');
-require('should-http');
 
 module.exports = {
-    TEST_ROOT: path.resolve('.') + path.sep,
+    TEST_ROOT: __dirname,
     expect: chai.expect,
     assert: chai.assert,
 };

@@ -2,7 +2,6 @@
 
 var mockery = require('mockery');
 
-
 /**
  * 使用 fake/mock 模块**全局替换**某些模块
  */
@@ -11,7 +10,7 @@ function loadGlobalMocks() {
 
     mockery.enable({
         useCleanCache: true,
-        warnOnUnregistered: false
+        warnOnUnregistered: false,
     });
 }
 

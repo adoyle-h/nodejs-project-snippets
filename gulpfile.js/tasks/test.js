@@ -7,15 +7,8 @@
  * @param  {Object}  args    命令行参数
  */
 module.exports = function(gulp, config, LL, args) {  // eslint-disable-line
-    gulp.task('test', function() {
-        var mocha = LL.mocha;
-
-        return gulp.src('test.js', {
-            read: false,
-        })
-        // gulp-mocha needs filepaths so you can't have any plugins before it
-        .pipe(mocha({
-            reporter: 'nyan',
-        }));
+    gulp.task('test', function(callback) {
+        var mocha = require('../../test/mocha_runner');
+        mocha.run(callback);
     });
 };
