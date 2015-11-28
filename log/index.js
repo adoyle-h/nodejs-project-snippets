@@ -212,6 +212,10 @@ function log() {
         }
     }
 
+    if (message === undefined && meta === undefined && args.length > 0) {
+        message = args.toString();
+    }
+
     message = message || '(empty message)';
 
     if (meta) {
