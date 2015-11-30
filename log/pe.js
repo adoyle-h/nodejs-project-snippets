@@ -18,8 +18,8 @@ function createPE(params) {
 
     var pe = new PrettyError();
 
-    pe.alias(projectDir, '(Project_Directory)');
-    pe.alias(projectDir + Path.sep + 'node_modules', '(Node_Modules)');
+    pe.alias(projectDir, '(Project_Dir)/');
+    pe.alias(projectDir + Path.sep + 'node_modules', '(Node_Modules)/');
 
     if (colorize) {
         pe.appendStyle({
@@ -91,50 +91,11 @@ function createPE(params) {
             },
 
             'pretty-error > trace > item > footer > addr': {
-                display: 'none',
+                color: 'grey',
             },
         });
     } else {
-        pe.appendStyle({
-            'pretty-error > header > title > kind': {
-                display: 'none',
-            },
-
-            'pretty-error > header > colon': {
-                display: 'none',
-            },
-
-            'pretty-error > header > message': {
-                color: 'white',
-                background: 'black',
-                padding: '0 1',
-            },
-
-            'pretty-error > trace > item': {
-                marginLeft: 2,
-                bullet: '"o"',
-            },
-
-            'pretty-error > trace > item > header > pointer > file': {
-                color: 'white',
-            },
-
-            'pretty-error > trace > item > header > pointer > colon': {
-                color: 'white',
-            },
-
-            'pretty-error > trace > item > header > pointer > line': {
-                color: 'white',
-            },
-
-            'pretty-error > trace > item > header > what': {
-                color: 'white',
-            },
-
-            'pretty-error > trace > item > footer > addr': {
-                display: 'none',
-            },
-        });
+        pe.withoutColors();
     }
 
     return pe;
