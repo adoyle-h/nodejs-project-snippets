@@ -8,7 +8,7 @@
  */
 module.exports = function(gulp, config, LL, args) {  // eslint-disable-line
     gulp.task('test', function(callback) {
-        var mocha = require('../../test/mocha_runner');
+        var mocha = require('../../test');
         mocha.run(callback);
     });
 };

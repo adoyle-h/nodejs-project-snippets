@@ -44,16 +44,8 @@ function init() {
 
     mocha.addFile(resolve('plugins'));
     loadCases(mocha);
+
+    return mocha;
 }
 
-
-// Start
-init();
-
-if (!module.parent) {
-    mocha.run(function(failures) {
-        process.exit(failures);
-    });
-} else {
-    module.exports = mocha;
-}
+exports.init = init;

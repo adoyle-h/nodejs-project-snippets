@@ -21,7 +21,7 @@
     "bin": "./bin"
   },
   "scripts": {
-    "test": "node test/mocha_runner",
+    "test": "node test",
     "start": "node app"
   },
   "engines": {

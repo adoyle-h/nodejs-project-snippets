@@ -82,7 +82,7 @@
 - 目的: 插件化测试套件，分层测试（单元测试、集成测试、端到端测试），
 - 主要文件: test/
 - 依赖: sub_config(可选)
-- 第三方依赖: npm i --save lodash walkdir, npm i --save-dev mocha should chai
+- 第三方依赖: npm i --save lodash walkdir && npm i --save-dev mocha should chai
 
 建议放置在项目根目录下
 
