@@ -11,11 +11,14 @@ module.exports = function(gulp, config, LL, args) {  // eslint-disable-line no-u
         var eslint = LL.eslint;
         var cached = LL.cached;
 
+        var opts = {
+            quiet: true,
+        };
+        if (args.fix || args.f) opts.fix = true;
+
         return gulp.src(config.get('tasks.lint.src'))
         .pipe(cached('lint'))
-        .pipe(eslint({
-            quiet: true,
-        }))
+        .pipe(eslint(opts))
         .pipe(eslint.format())
         .pipe(eslint.failAfterError());
     });
