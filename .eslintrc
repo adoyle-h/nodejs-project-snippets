@@ -24,9 +24,18 @@
         spaced-comment: [0, "always"],
         no-param-reassign: [1, {"props": true}],
         no-console: 2,
-        no-shadow: 0,
+        no-shadow: [0, {
+            "builtinGlobals": true,
+            "hoist": "all",
+            "allow": ["callback"],
+        }],
         dot-notation: 1,
         no-extra-parens: 1,
+        object-curly-spacing: [2, "never"],
+        space-before-function-paren: [2, {
+            "anonymous": "never",
+            "named": "never",
+        }],
     },
     "env": {
         "node": true
