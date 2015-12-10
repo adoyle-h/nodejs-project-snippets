@@ -51,9 +51,14 @@ function createPE(params) {
                 padding: '0 1', // top/bottom left/right
             },
 
+            'pretty-error > trace': {
+                marginTop: 0,
+            },
+
             // each trace item ...
             'pretty-error > trace > item': {
                 // ... can have a margin ...
+                marginBottom: 0,
                 marginLeft: 2,
 
                 // ... and a bullet character!
