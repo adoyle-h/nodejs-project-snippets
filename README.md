@@ -148,8 +148,12 @@
 
 其余修改请 fork 本项目，打造属于你自己的 NodeJS Project Snippets 吧。
 
+## 版权声明（License）
+
+本项目代码遵循 BSD 3-clause License，具体请看 [LICENSE][] 文件的内容。
 
 <!-- 链接 -->
 
 [Semver]: http://semver.org/lang/zh-CN/
 [Issue]: https://github.com/adoyle-h/nodejs-project-snippets/issues
+[LICENSE]: ./LICENSE
