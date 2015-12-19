@@ -1,25 +1,67 @@
 'use strict';
 
+/**
+ * It will be better if you would comment every property to explain how it effects.
+ *
+ * Relative paths are relative to the directory where the process starts.
+ */
 var config = {
-    root: {
-        src: './src',
-        dest: './public',
-    },
-    /**
-     * 每个 task 必须至少存在以下字段：
-     *   - src: 起始路径
-     *   - dest: 目标路径
-     */
     tasks: {
+        backup: {
+            log: {
+                src: 'logs/*',
+                desc: 'backup/*',
+            },
+        },
+
+        /**
+         * clean task uses `sindresorhus/del`, whose glob rules are different from gulp's.
+         * see https://github.com/gulpjs/gulp/blob/master/docs/recipes/delete-files-folder.md
+         */
+        clean: {
+            log: {
+                src: ['./logs/**/*', '!./logs/.gitkeep'],
+            },
+            release: {
+                src: './release/**/*',
+            },
+        },
+
+        release: {
+            license: {
+                src: ['./experimental/**'],
+                dest: './release',
+                license: 'Apache',
+                author: 'ADoyle',
+            },
+        },
+
         lint: {
             src: [
                 '!./node_modules/**',
                 './**/*.js',
             ],
+            // see https://github.com/adametry/gulp-eslint#eslintoptions
+            eslintOptions: {
+                quiet: true,
+            },
+        },
+
+        server: {
+            // the entry point of application
+            main: 'index.js',
+            // nodemon ignore files
+            ignore: ['node_modules/*', 'bower_components/*', 'assets/*', 'bin/*', 'doc/*', 'logs/*', 'scripts/*', 'temp/*', 'test/*', 'gulpfile.js'],
+            env: {
+                'NODE_ENV': 'development',
+            },
         },
 
         watch: {
+        },
 
+        test: {
+            mochaRunner: '../../test/index',
         },
 
         font: {

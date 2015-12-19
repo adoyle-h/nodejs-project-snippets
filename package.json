@@ -49,6 +49,7 @@
   },
   "devDependencies": {
     "chai": "^3.4.1",
+    "del": "^2.2.0",
     "eslint": "^1.9.0",
     "eslint-config-airbnb": "^1.0.0",
     "eslint-plugin-react": "^3.8.0",
@@ -60,6 +61,7 @@
     "gulp-eslint": "^1.1.0",
     "gulp-if": "^1.2.5",
     "gulp-ignore": "^1.2.1",
+    "gulp-license": "^1.0.0",
     "gulp-nodemon": "^1.0.5",
     "gulp-serve": "^0.3.0",
     "gulp-watch": "^4.3.5",

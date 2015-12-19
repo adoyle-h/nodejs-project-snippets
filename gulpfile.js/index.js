@@ -10,7 +10,6 @@ var LL = require('./lib/lazy_loader');
 var traverseFilesSync = require('./lib/traverseFiles').traverseFilesSync;
 var GULP_TASKS_PATH = Path.resolve(__dirname, './tasks/');
 
-// 将 require 都放到这里，通过 LL 来调用变量
 LL.setMulti(requirements);
 
 var args = minimist(process.argv.slice(2));
