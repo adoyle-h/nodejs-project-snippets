@@ -64,7 +64,7 @@ Console.prototype.log = function(level, msg, meta, callback) {
                 message: msg,
                 stack: errorStack,
             });
-            format = format + '\nwith ErrorStack: %s';
+            format = format + ' with ErrorStack:\n%s';
             args.push(errorStack);
         }
     }
