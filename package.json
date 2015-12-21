@@ -15,11 +15,6 @@
   "bugs": {
     "url": "https://github.com/adoyle-h/nodejs-project-snippets/issues"
   },
-  "directories": {
-    "doc": "./doc",
-    "lib": "./src",
-    "bin": "./bin"
-  },
   "license": "BSD-3-Clause",
   "scripts": {
     "test": "node test",
@@ -59,6 +54,7 @@
     "gulp-cached": "^1.1.0",
     "gulp-changed": "^1.2.1",
     "gulp-eslint": "^1.1.0",
+    "gulp-filter": "^3.0.1",
     "gulp-if": "^1.2.5",
     "gulp-ignore": "^1.2.1",
     "gulp-license": "^1.0.0",

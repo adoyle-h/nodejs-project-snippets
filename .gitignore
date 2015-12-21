@@ -1,4 +1,5 @@
 !.gitkeep
+release/
 bower_components/
 node_modules/
 upload/**

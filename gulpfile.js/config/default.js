@@ -22,17 +22,27 @@ var config = {
             log: {
                 src: ['./logs/**/*', '!./logs/.gitkeep'],
             },
-            release: {
-                src: './release/**/*',
-            },
         },
 
         release: {
             license: {
-                src: ['./experimental/**'],
+                src: [
+                    '**/*',
+                    '!node_modules/**', '!node_modules',
+                    '!**/*._*', '!**/.DS_Store',
+                ],
                 dest: './release',
-                license: 'Apache',
-                author: 'ADoyle',
+                author: 'ADoyle',  // default author for all files
+                license: 'Apache',  // default license for all files
+                matches: [{  // it could be empty array if you do not need specify files with other license
+                    glob: ['**/*.js'],
+                    license: 'Apache',  // override the default license
+                    // author: 'Belly',  // override the default author
+                }],
+            },
+            npm: {
+                src: 'release',
+                dest: './release',
             },
         },
 

@@ -14,8 +14,19 @@ module.exports = function(gulp, config, LL, args) {  // eslint-disable-line no-u
 
     gulp.task('clean:release', function() {
         var del = LL.del;
-        return del(config.get('tasks.clean.release.src'));
+        return del(config.get('tasks.release.license.dest'));
     });
 
-    gulp.task('clean', ['clean:log', 'clean:release']);
+    gulp.task('clean:npm-package', function() {
+        var del = LL.del;
+        var packageJSON = LL.packageJSON;
+        var Path = LL.Path;
+        var util = LL.nodeUtil;
+        var dest = Path.resolve(config.get('tasks.release.npm.dest'));
+        var destFile = util.format('%s/%s.tgz', dest, packageJSON.name);
+
+        return del(destFile);
+    });
+
+    gulp.task('clean', ['clean:log', 'clean:release', 'clean:npm-package']);
 };

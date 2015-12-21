@@ -1,10 +1,19 @@
 'use strict';
 
 module.exports = {
+    // native libraries
     Path: 'path',
     FS: 'fs',
+    nodeUtil: 'util',
     CP: 'child_process',
+
+    // third-party libraries
     async: 'async',
+    ms: 'ms',
+    del: 'del',
+    runSequence: 'run-sequence',
+
+    // third-party libraries prefixed with 'gulp-'
     bump: 'gulp-bump',
     changed: 'gulp-changed',
     nodemon: 'gulp-nodemon',
@@ -12,7 +21,8 @@ module.exports = {
     cached: 'gulp-cached',
     watch: 'gulp-watch',
     license: 'gulp-license',
-    ms: 'ms',
-    del: 'del',
-    runSequence: 'run-sequence',
+    filter: 'gulp-filter',
+
+    // data
+    packageJSON: './package.json',
 };

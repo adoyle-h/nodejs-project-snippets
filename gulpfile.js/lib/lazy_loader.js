@@ -1,9 +1,15 @@
 'use strict';
 
+var Path = require('path');
+
 // Lazy Loader
 var LL = {
     internals: {},
     set: function(name, path) {
+        if (path.indexOf('.') === 0) {
+            path = Path.resolve(path);
+        }
+
         this.internals[name] = {
             path: path,
             requirement: null,
