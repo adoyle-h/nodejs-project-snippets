@@ -37,6 +37,8 @@
             "named": "never",
         }],
         "no-bitwise": 2,
+        "no-else-return": 0,
+        "no-multi-str": 0,
     },
     "env": {
         "node": true
