@@ -15,9 +15,9 @@ module.exports = function(gulp, config, LL, args) {  // eslint-disable-line no-u
         if (args.fix || args.f) opts.fix = true;
 
         return gulp.src(config.get('tasks.lint.src'))
-        .pipe(cached('lint'))
-        .pipe(eslint(opts))
-        .pipe(eslint.format())
-        .pipe(eslint.failAfterError());
+            .pipe(cached('lint'))
+            .pipe(eslint(opts))
+            .pipe(eslint.format())
+            .pipe(eslint.failAfterError());
     });
 };

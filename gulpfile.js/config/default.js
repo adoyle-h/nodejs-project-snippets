@@ -31,6 +31,9 @@ var config = {
                     '!node_modules/**', '!node_modules',
                     '!**/*._*', '!**/.DS_Store',
                 ],
+                srcOpts: {
+                    base: './',
+                },
                 dest: './release',
                 author: 'ADoyle',  // default author for all files
                 license: 'Apache',  // default license for all files
@@ -41,7 +44,7 @@ var config = {
                 }],
             },
             npm: {
-                src: 'release',
+                src: './release',
                 dest: './release',
             },
         },

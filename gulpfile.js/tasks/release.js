@@ -16,7 +16,7 @@ module.exports = function(gulp, config, LL, args) {  // eslint-disable-line no-u
         var author = conf.get('author');
         var defaultLicense = conf.get('license');
 
-        var stream = gulp.src(conf.get('src'));
+        var stream = gulp.src(conf.get('src'), conf.get('srcOpts'));
 
         matches.forEach(function(matchObj) {
             var f = filter(matchObj.glob, {restore: true});
@@ -37,11 +37,12 @@ module.exports = function(gulp, config, LL, args) {  // eslint-disable-line no-u
         var util = LL.nodeUtil;
         var packageJSON = LL.packageJSON;
 
-        var src = conf.get('src');
+        var src = Path.resolve(conf.get('src'));
         var dest = Path.resolve(conf.get('dest'));
         var destFile = util.format('%s/%s.tgz', dest, packageJSON.name);
+        var packageName = src.split('/').pop();
 
-        var command = util.format('tar -czf %s -C %s %s', destFile, Path.resolve(src, '..'), src);
+        var command = util.format('tar -czf %s -C %s %s', destFile, Path.resolve(src, '..'), packageName);
 
         CP.exec(command, done);
     });
