@@ -57,8 +57,9 @@ var config = {
 
         lint: {
             src: [
-                '!./node_modules/**',
-                './**/*.js',
+                '**/*.js',
+                '!node_modules/**',
+                '!release/**',
             ],
             // see https://github.com/adametry/gulp-eslint#eslintoptions
             eslintOptions: {

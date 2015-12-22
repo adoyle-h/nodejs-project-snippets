@@ -68,7 +68,7 @@ module.exports = function(gulp, config, LL, args) {  // eslint-disable-line no-u
 
         var command = '\
             git add . && \
-            git stash && \
+            git stash save "stash for release" && \
             git fetch --prune && \
             git rebase origin/develop release \
         ';
@@ -135,6 +135,7 @@ module.exports = function(gulp, config, LL, args) {  // eslint-disable-line no-u
         var CP = LL.CP;
         var util = LL.nodeUtil;
         var command = util.format('\
+            git fetch --prune && \
             git rebase origin/develop develop && \
             git merge --no-ff --no-edit release && \
             git rebase origin/master master && \
