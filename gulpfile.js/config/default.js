@@ -25,6 +25,9 @@ var config = {
         },
 
         release: {
+            changelog: {
+                name: 'ChangeLog.md',
+            },
             license: {
                 src: [
                     '**/*',
@@ -46,6 +49,9 @@ var config = {
             npm: {
                 src: './release',
                 dest: './release',
+            },
+            'git-tag': {
+                dest: 'master',  // branch name or commit hash
             },
         },
 

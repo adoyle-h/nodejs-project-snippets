@@ -63,9 +63,125 @@ module.exports = function(gulp, config, LL, args) {  // eslint-disable-line no-u
         CP.exec(command, done);
     });
 
+    gulp.task('release:pre', function(done) {
+        var CP = LL.CP;
+
+        var command = '\
+            git add . && \
+            git stash && \
+            git fetch --prune && \
+            git rebase origin/develop release \
+        ';
+        CP.exec(command, done);
+    });
+
+    gulp.task('release:changelog', function(done) {
+        var CP = LL.CP;
+        var util = LL.nodeUtil;
+        var conf = config.get('tasks.release.changelog');
+        var name = conf.get('name');
+
+        var command = util.format('touch %s', name);
+        CP.exec(command, function(err) {
+            if (err) return done(err);
+
+            var command2 = util.format('git add %s && git commit -m "update %s" --no-edit', name, name);
+            CP.exec(command2, done);
+        });
+    });
+
+    /**
+     * gulp release:bump [options]
+     *
+     * options:
+     *     -t --type [major, minor, patch]  Semver 2.0. default to patch
+     *     -v --version VERSION  Bump to a specific version
+     */
+    gulp.task('release:bump', function(done) {
+        var Path = LL.Path;
+        var CP = LL.CP;
+        var util = LL.nodeUtil;
+
+        var bumpOpts = {
+            key: 'version',
+            indent: 2,
+        };
+
+        var version = args.v || args.version;
+        var type = args.t || args.type || 'patch';
+
+        if (version) {
+            bumpOpts.version = version;
+        } else {
+            bumpOpts.type = type;
+        }
+
+        gulp.src(Path.resolve('./package.json'))
+            .pipe(LL.bump(bumpOpts))
+            .pipe(gulp.dest('./'))
+            .on('end', function() {
+                var packageJSON = LL.packageJSON;
+                var tag = packageJSON.version;
+
+                var command = util.format('\
+                    git add package.json && \
+                    git commit -m "version to %s" --no-edit \
+                ', tag);
+                CP.exec(command, done);
+            });
+    });
+
+    gulp.task('release:branch', function(done) {
+        var CP = LL.CP;
+        var util = LL.nodeUtil;
+        var command = util.format('\
+            git rebase origin/develop develop && \
+            git merge --no-ff --no-edit release && \
+            git rebase origin/master master && \
+            git merge --no-ff --no-edit release \
+        ');
+        CP.exec(command, done);
+    });
+
+    gulp.task('release:tag', function(done) {
+        var CP = LL.CP;
+        var util = LL.nodeUtil;
+        var packageJSON = LL.packageJSON;
+        var tag = packageJSON.version;
+        var conf = config.get('tasks.release.git-tag');
+        var commitHash = conf.get('dest');
+
+        var command = util.format('git tag -a v%s %s -m "release version %s"', tag, commitHash, tag);
+        CP.exec(command, done);
+    });
+
+    gulp.task('release:push', function(done) {
+        var CP = LL.CP;
+        var command = '\
+            git push origin develop && \
+            git push origin master && \
+            git push --tags \
+        ';
+        CP.exec(command, done);
+    });
+
+    gulp.task('release:code', function(done) {
+        LL.runSequence(
+            'lint',
+            'test',
+            'release:pre',
+            'release:changelog',
+            'release:bump',
+            'release:branch',
+            'release:tag',
+            'release:push',
+            done
+        );
+    });
+
     gulp.task('release', function(done) {
         LL.runSequence(
-            'test',
+            'release:code',
             'release:license',
             'release:npm-pack',
             'release:npm-publish',
