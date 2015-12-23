@@ -77,16 +77,22 @@ module.exports = function(gulp, config, LL, args) {  // eslint-disable-line no-u
     gulp.task('release:changelog', function(done) {
         var CP = LL.CP;
         var util = LL.nodeUtil;
+        var changelog = LL.changelog;
         var conf = config.get('tasks.release.changelog');
         var name = conf.get('name');
 
-        var command = util.format('touch %s', name);
-        CP.exec(command, function(err) {
-            if (err) return done(err);
-
-            var command2 = util.format('git add %s && git commit -m "update %s" --no-edit', name, name);
-            CP.exec(command2, done);
-        });
+        gulp.src(name, {
+            buffer: false,
+        })
+            .pipe(changelog({
+                preset: 'angular',
+            }))
+            .pipe(gulp.dest('./'))
+            .on('end', function() {
+                var command = util.format('git add %s', name);
+                CP.exec(command, done);
+            })
+            .on('error', done);
     });
 
     /**
@@ -124,10 +130,11 @@ module.exports = function(gulp, config, LL, args) {  // eslint-disable-line no-u
 
                 var command = util.format('\
                     git add package.json && \
-                    git commit -m "version to %s" --no-edit \
+                    git commit -m "update version to %s" --no-edit \
                 ', tag);
                 CP.exec(command, done);
-            });
+            })
+            .on('error', done);
     });
 
     gulp.task('release:branch', function(done) {

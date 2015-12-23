@@ -22,6 +22,7 @@ module.exports = {
     watch: 'gulp-watch',
     license: 'gulp-license',
     filter: 'gulp-filter',
+    changelog: 'gulp-conventional-changelog',
 
     // data
     packageJSON: './package.json',
