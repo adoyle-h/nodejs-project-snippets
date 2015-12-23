@@ -54,11 +54,10 @@ module.exports = function(gulp, config, LL, args) {  // eslint-disable-line no-u
         var util = LL.nodeUtil;
         var packageJSON = LL.packageJSON;
 
-        var tag = packageJSON.version;
         var dest = Path.resolve(conf.get('dest'));
         var destFile = util.format('%s/%s.tgz', dest, packageJSON.name);
 
-        var command = util.format('npm publish --tag %s --access public %s', tag, destFile);
+        var command = util.format('npm publish --access public %s', destFile);
 
         CP.exec(command, done);
     });
