@@ -53,16 +53,14 @@
 ### 子配置（sub_config）
 
 - 目的: 为了让子模块能够管理自身的配置。
-- 主要文件: sub_config.js
-- 依赖: 无
-- 第三方依赖: npm i --save node-config
+
+该部分已独立成类库 [config-sp](https://github.com/adoyle-h/config-sp)
 
 ### 自动化（gulp）
 
 - 思路/特性: 将 gulp 任务拆分成各个单元，每个单元集合功能类似的子任务。一个单元完成其所有子任务。也能够单独调用子任务。
 - 主要文件: gulpfile.js/
-- 依赖: sub_config
-- 第三方依赖: npm i --save-dev minimist gulp, 其他第三方依赖见 gulpfile.js/require.js
+- 第三方依赖: npm i --save-dev minimist gulp config-sp, 其他第三方依赖见 gulpfile.js/require.js
 
 建议放置在项目根目录下
 
@@ -81,8 +79,7 @@
 
 - 目的: 插件化测试套件，分层测试（单元测试、集成测试、端到端测试），
 - 主要文件: test/
-- 依赖: sub_config(可选)
-- 第三方依赖: npm i --save lodash walkdir && npm i --save-dev mocha should chai
+- 第三方依赖: npm i --save lodash walkdir && npm i --save-dev mocha should chai config-sp
 
 建议放置在项目根目录下
 

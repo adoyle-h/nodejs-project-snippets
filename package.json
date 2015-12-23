@@ -15,6 +15,7 @@
   "bugs": {
     "url": "https://github.com/adoyle-h/nodejs-project-snippets/issues"
   },
+  "author": "ADoyle <adoyle.h@gmail.com>",
   "license": "BSD-3-Clause",
   "scripts": {
     "test": "node test",
@@ -28,6 +29,7 @@
     "bytes": "^2.1.0",
     "cli-color": "^1.1.0",
     "config": "^1.16.0",
+    "config-sp": "^0.1.0",
     "humps": "^1.0.0",
     "joi": "^6.10.0",
     "lodash": "^3.10.1",

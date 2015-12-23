@@ -1,5 +1,5 @@
 'use strict';
 
-var load = require('../../sub_config').load;
-var config = load('gulp', __dirname, ['default.js', 'local.js']);
+var load = require('config-sp').load;
+var config = load(__dirname, ['default.js', 'local.js']);
 module.exports = config;
