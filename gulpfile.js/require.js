@@ -12,6 +12,7 @@ module.exports = {
     ms: 'ms',
     del: 'del',
     runSequence: 'run-sequence',
+    inquirer: 'inquirer',
 
     // third-party libraries prefixed with 'gulp-'
     bump: 'gulp-bump',

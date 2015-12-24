@@ -62,7 +62,24 @@
 - 主要文件: gulpfile.js/
 - 第三方依赖: npm i --save-dev minimist gulp config-sp, 其他第三方依赖见 gulpfile.js/require.js
 
-建议放置在项目根目录下
+必须放置在项目根目录下
+
+### 自动化构建（scaffolding && generate）
+
+- 目的: 自动化构建代码片段和目录结构，能够在项目生命周期中一直使用。
+- 主要文件: gulpfile.js/tasks/generate.js, gulpfile.js/generators/
+- 依赖: gulpfile.js/
+- 第三方依赖: gulp
+
+实际上利用 gulp 来实现构建，每个构建任务就是一个 gulp 任务。  
+每个 gulp 任务的名字必须以 "generator:" 开头。
+
+执行 `gulp g -m <generator name> <args>` 以执行指定任务。  
+`<generator name>` 为构建的任务名称，这里只需要输入 "generator:" 后面的名字就行了。  
+`<args>` 为任务的参数，根据每个任务的实际要求来传。
+
+其实这个跟 yeoman、slush 类似，只是这两个工具需要将构建任务打包发布。  
+而在项目构建过程中，构建的代码必然也需要随时修改的。所以利用 gulp 自身来完成构建任务，更灵活且易修改。
 
 ### 工具（util）
 
