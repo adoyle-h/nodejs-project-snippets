@@ -167,6 +167,7 @@ module.exports = function(gulp, config, LL, args) {  // eslint-disable-line no-u
         var command = '\
             git push origin develop && \
             git push origin master && \
+            git push origin release && \
             git push --tags \
         ';
         CP.exec(command, done);
