@@ -4,6 +4,8 @@ var gulp = require('gulp');
 var minimist = require('minimist');
 var Path = require('path');
 
+if (process.cwd() !== Path.resolve()) throw new Error('Current process should run on the root directory of this project.');
+
 var config = require('./config');
 var requirements = require('./require');
 var LL = require('./lib/lazy_loader');
