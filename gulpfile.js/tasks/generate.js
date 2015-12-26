@@ -13,6 +13,7 @@ module.exports = function(gulp, config, LL, args) { // eslint-disable-line no-un
     var GULP_GENERATORS_PATH = Path.resolve(__dirname, '../generators/');
 
     traverseFilesSync(GULP_GENERATORS_PATH, function(filename) {
+        if (filename.lastIndexOf('.js') !== (filename.length - 3)) return undefined;
         var task = require(Path.resolve(GULP_GENERATORS_PATH, filename));
         task(gulp, config, LL, args);
     }, {
