@@ -136,8 +136,8 @@
 
 - 目的: 建立一套应用的公共接口，方便应用模块化、流程化。
 - 主要文件: app.js
-- 依赖: include, log, config, util
-- 第三方依赖: 无
+- 依赖: include, log, config
+- 第三方依赖: wodule
 
 建议放置在项目根目录下
 
