@@ -2,7 +2,7 @@
 
 var Path = require('path');
 var Mocha = require('mocha');
-var util = require('lodash');
+var util = require('./util');
 
 var config = require('./config');
 var globals = require('./globals');

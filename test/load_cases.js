@@ -1,9 +1,9 @@
 /*
-* 定义如何加载测试案例
+* Define how to load test cases.
 */
 'use strict';
 
-var util = require('lodash');
+var util = require('./util');
 var walk = require('walkdir');
 var Path = require('path');
 

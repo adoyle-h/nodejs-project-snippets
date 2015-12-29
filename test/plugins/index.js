@@ -1,6 +1,6 @@
 'use strict';
 
-var util = require('lodash');
+var util = require('../util');
 
 /**
  * 在这里定义插件加载顺序，即 before/after 加载顺序。
