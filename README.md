@@ -96,7 +96,7 @@
 
 - 目的: 插件化测试套件，分层测试（单元测试、集成测试、端到端测试），
 - 主要文件: test/
-- 第三方依赖: npm i --save lodash walkdir && npm i --save-dev mocha should chai config-sp
+- 第三方依赖: npm i --save walkdir && npm i --save-dev mocha should chai config-sp
 
 建议放置在项目根目录下
 
@@ -137,7 +137,7 @@
 - 目的: 建立一套应用的公共接口，方便应用模块化、流程化。
 - 主要文件: app.js
 - 依赖: include, log, config
-- 第三方依赖: wodule
+- 第三方依赖: npm i --save wodule
 
 建议放置在项目根目录下
 
