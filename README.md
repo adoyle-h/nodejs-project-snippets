@@ -139,11 +139,28 @@
 ### 应用程序（app）
 
 - 目的: 建立一套应用的公共接口，方便应用模块化、流程化。
-- 主要文件: app.js
+- 主要文件: 见 gulpfile.js/generators/application/
 - 依赖: include, log, config
 - 第三方依赖: npm i --save wodule
 
-建议放置在项目根目录下
+使用 gulp generator 来生成这个文件，执行：
+
+```sh
+gulp g -m application
+```
+
+### 模块（module）
+
+- 目的: 建立一套模块的公共接口，方便模块化、流程化。
+- 主要文件: 见 gulpfile.js/generators/module/
+- 依赖: 无
+- 第三方依赖: npm i --save wodule
+
+使用 gulp generator 来生成这个文件，执行：
+
+```sh
+gulp g -m module
+```
 
 ### gitignore
 
