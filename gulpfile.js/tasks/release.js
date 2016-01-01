@@ -111,6 +111,8 @@ module.exports = function(gulp, config, LL, args) {  // eslint-disable-line no-u
      * gulp release:bump [options]
      *
      * options:
+     *     -b --break  increase major version
+     *     -f --feature  increase minor version
      *     -t --type [major, minor, patch]  Semver 2.0. default to patch
      *     -v --version VERSION  Bump to a specific version
      */
@@ -124,11 +126,18 @@ module.exports = function(gulp, config, LL, args) {  // eslint-disable-line no-u
         };
 
         var version = args.v || args.version;
-        var type = args.t || args.type || 'patch';
 
         if (version) {
             bumpOpts.version = version;
         } else {
+            var type;
+            if (args.b || args.break) {
+                type = 'major';
+            } else if (args.f || args.feature) {
+                type = 'minor';
+            } else {
+                type = args.t || args.type || 'patch';
+            }
             bumpOpts.type = type;
         }
 
