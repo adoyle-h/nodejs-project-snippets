@@ -11,16 +11,18 @@ function init() {
     // do something to initialize
 }
 
-function start() {
-    return true;
+function start(callback) {
+    callback();
 }
 
-function stop() {
-    return true;
+function stop(callback) {
+    callback();
 }
 
-function exit() {
-    // do something for exit
+function exit(err) {
+    if (err) {
+        logger.fatal(err, 'An error occurred when prepare to exit application.');
+    }
 }
 
 var mod = new Module({
@@ -33,7 +35,9 @@ var mod = new Module({
 mod.init();
 mod.app = app;
 
-// 不通过 require 调用，即直接作为进程启动，则设置进程监听，并启动应用
+// If this file is not required by module –– started by `node app.js`,
+// then set listeners on process and start application.
+// Otherwise, only initialize and export as module.
 if (!module.parent) {
     process.env.NODE_ENV = config.util.getEnv('NODE_ENV') || 'development';
 
