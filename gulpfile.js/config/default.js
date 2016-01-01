@@ -1,5 +1,10 @@
 'use strict';
 
+var common = {
+    copyrightYear: '2015-2016',
+    author: 'ADoyle',
+};
+
 /**
  * It will be better if you would comment every property to explain how it effects.
  *
@@ -9,8 +14,8 @@ var config = {
     generators: {
         license: {
             dest: 'LICENSE',
-            year: '2015-2016',
-            author: 'ADoyle',  // default author for all files
+            year: common.copyrightYear,
+            author: common.author,  // default author for all files
         },
     },
     tasks: {
@@ -46,7 +51,8 @@ var config = {
                     base: './',
                 },
                 dest: './release',
-                author: 'ADoyle',  // default author for all files
+                year: common.copyrightYear,
+                author: common.author,  // default author for all files
                 license: 'Apache',  // default license for all files
                 matches: [{  // it could be empty array if you do not need specify files with other license
                     glob: ['**/*.js'],
