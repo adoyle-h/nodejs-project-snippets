@@ -44,7 +44,7 @@
     "urlencode": "^1.1.0",
     "walkdir": "0.0.11",
     "winston": "^2.1.0",
-    "wodule": "0.0.3"
+    "wodule": "^0.1.0"
   },
   "devDependencies": {
     "chai": "^3.4.1",
