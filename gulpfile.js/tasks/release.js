@@ -67,11 +67,22 @@ module.exports = function(gulp, config, LL, args) {  // eslint-disable-line no-u
     gulp.task('release:pre', function(done) {
         var CP = LL.CP;
 
+        var rebaseDest;
+        var commit = args.c || args.commit;
+        var branch = args.branch;
+        if (commit) {
+            rebaseDest = commit;
+        } else if (branch) {
+            rebaseDest = branch;
+        } else {
+            rebaseDest = 'HEAD';
+        }
+
         var command = '\
             git add . && \
             git stash save "stash for release" && \
             git fetch --prune && \
-            git rebase origin/develop release \
+            git rebase ' + rebaseDest + ' release \
         ';
         CP.exec(command, done);
     });
