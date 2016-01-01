@@ -1,5 +1,8 @@
 'use strict';
 
+var Path = require('path');
+var walk = require('walkdir');
+
 /**
  * @param  {Object}  gulp    The gulp object
  * @param  {Object}  config  The configuration for gulp tasks. To get a property using `config.a.b.c` or `config.get('a.b.c')`
@@ -8,16 +11,20 @@
  */
 module.exports = function(gulp, config, LL, args) { // eslint-disable-line no-unused-vars
     /**** Load Generators ****/
-    var Path = require('path');
-    var traverseFilesSync = require('../lib/traverseFiles').traverseFilesSync;
-    var GULP_GENERATORS_PATH = Path.resolve(__dirname, '../generators/');
+    var GULP_GENERATORS_DIR = Path.resolve(__dirname, '../generators/');
 
-    traverseFilesSync(GULP_GENERATORS_PATH, function(filename) {
-        if (filename.lastIndexOf('.js') !== (filename.length - 3)) return undefined;
-        var task = require(Path.resolve(GULP_GENERATORS_PATH, filename));
-        task(gulp, config, LL, args);
-    }, {
-        recursive: true,
+    walk.sync(GULP_GENERATORS_DIR, {
+        no_recurse: true,
+    }, function(filepath, stats) {
+        var task;
+        if (stats.isFile()) {
+            if (Path.extname(filepath) !== '.js') return undefined;
+            task = require(filepath);
+            task(gulp, config, LL, args);
+        } else if (stats.isDirectory()) {
+            task = require(filepath);
+            task(gulp, config, LL, args);
+        }
     });
     /*************************/
 
