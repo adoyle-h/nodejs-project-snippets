@@ -31,7 +31,7 @@ module.exports = function(gulp, config, LL, args) { // eslint-disable-line no-un
     gulp.task('generate', function(done) {
         if (!args.m) return done(new Error('Missing generator module'));
 
-        var generator = 'generate:' + args.m;
+        var generator = 'generator:' + args.m;
         LL.runSequence(generator, done);
     });
 

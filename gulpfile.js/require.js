@@ -24,6 +24,7 @@ module.exports = {
     license: 'gulp-license',
     filter: 'gulp-filter',
     changelog: 'gulp-conventional-changelog',
+    replace: 'gulp-replace',
 
     // data
     packageJSON: './package.json',

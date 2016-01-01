@@ -115,7 +115,6 @@ module.exports = function(gulp, config, LL, args) {  // eslint-disable-line no-u
     gulp.task('release:bump', function(done) {
         var Path = LL.Path;
         var CP = LL.CP;
-        var util = LL.nodeUtil;
 
         var bumpOpts = {
             key: 'version',

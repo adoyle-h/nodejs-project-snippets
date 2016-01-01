@@ -6,6 +6,13 @@
  * Relative paths are relative to the directory where the process starts.
  */
 var config = {
+    generators: {
+        license: {
+            dest: 'LICENSE',
+            year: '2015-2016',
+            author: 'ADoyle',  // default author for all files
+        },
+    },
     tasks: {
         backup: {
             log: {
