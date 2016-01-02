@@ -72,15 +72,25 @@
 - 依赖: gulpfile.js/
 - 第三方依赖: gulp
 
-实际上利用 gulp 来实现构建，每个构建任务就是一个 gulp 任务。  
-每个 gulp 任务的名字必须以 "generator:" 开头。
+实际上利用 gulp 来实现代码生成器（generator），每个生成器就是一个 gulp 任务。  
+每个生成器的任务名字必须以 "generator:" 开头，文件名必须以 "generator:" 后面的名字命名。
 
-执行 `gulp g -m <generator name> <args>` 以执行指定任务。  
-`<generator name>` 为构建的任务名称，这里只需要输入 "generator:" 后面的名字就行了。  
+执行 `gulp g -m <generator name> <args>` 以执行指定构建任务。  
+`<generator name>` 为生成器的任务名称，这里只需要输入 "generator:" 后面的名字就行了。  
 `<args>` 为任务的参数，根据每个任务的实际要求来传。
+
+为了简化输入，你可以设置别名如 `alias g='gulp g -m'`，这样就可以通过 `g <generator name> <args>` 来执行生成器了。
 
 其实这个跟 yeoman、slush 类似，只是这两个工具需要将构建任务打包发布。  
 而在项目构建过程中，构建的代码必然也需要随时修改的。所以利用 gulp 自身来完成构建任务，更灵活且易修改。
+
+#### 自动构建生成器
+
+执行 `gulp g -m generator -n <生成器名称>` 自动为你产生一个生成器。放置在 `gulpfile.js/generators/` 目录下。
+
+#### 自动构建 gulp 任务
+
+执行 `gulp g -m task -n '<gulp 任务名称>'` 自动为你产生一个 gulp 任务文件。放置在 `gulpfile.js/tasks/` 目录下。
 
 ### 工具（util）
 
@@ -122,13 +132,13 @@
 - 依赖: 无
 - 第三方依赖: 无
 
-### 代码风格（eslint）
+### 代码风格（code style guide）
 
 - 目的: 统一编码风格，让所有代码看起来像是一个人写的
-- 思路/特性: 基于 airbnb/javascript
+- 思路/特性: 使用 eslint，基于 airbnb/javascript 编写 .eslintrc
 - 主要文件: .eslintrc, .eslintignore
 - 依赖: 无
-- 第三方依赖: 无
+- 第三方依赖: npm i --save-dev eslint eslint-config-airbnb
 
 ### 验证（validator）
 
@@ -143,9 +153,10 @@
 - 依赖: include, log, config
 - 第三方依赖: npm i --save wodule
 
-使用 gulp generator 来生成这个文件，执行：
+本文件通过 gulp generator 生成，执行：
 
 ```sh
+# 默认将在项目根目录生成 app.js 文件
 gulp g -m application
 ```
 
@@ -156,10 +167,11 @@ gulp g -m application
 - 依赖: 无
 - 第三方依赖: npm i --save wodule
 
-使用 gulp generator 来生成这个文件，执行：
+本文件通过 gulp generator 生成，执行：
 
 ```sh
-gulp g -m module
+# 若没有写 -o，默认将在项目根目录生成 new_module.js 文件
+gulp g -m module -o <输出文件路径>
 ```
 
 ### gitignore
