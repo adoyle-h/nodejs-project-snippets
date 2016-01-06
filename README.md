@@ -41,6 +41,15 @@
 - 依赖: lib/config
 - 第三方依赖: npm i --save winston pretty-error lodash sprintf-js bytes cli-color
 
+### 错误（error）
+
+- 目的: 定义一套通用的自定义错误
+- 主要文件: lib/error
+- 依赖: 无
+- 第三方依赖: npm i --save ero
+
+主要部分已独立成类库 [Ero.js](https://github.com/adoyle-h/Ero.js)
+
 ### 配置（config）
 
 - 目的: 二次封装 node-config
