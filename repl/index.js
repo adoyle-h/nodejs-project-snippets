@@ -8,7 +8,7 @@ var contents = {
     util: include('lib/util'),
     config: include('lib/config'),
     os: require('os'),
-    CONSTS: include('src/CONSTS'),
+    CONSTS: include('lib/consts'),
     logger: include('lib/log').create(module),
 };
 

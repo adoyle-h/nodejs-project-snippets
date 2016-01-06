@@ -75,7 +75,7 @@ var projectDir = process.env.NODE_ROOT || Path.resolve(__dirname, '.');
 init(projectDir, {
     map: {
         'assets': 'assets',
-        'lib': '.',
+        'lib': 'lib',
         'helpers': 'src/helpers',
         'routers': 'src/routers',
         'controllers': 'src/controllers',

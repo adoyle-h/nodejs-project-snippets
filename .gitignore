@@ -1,4 +1,6 @@
 ####### Project Ignores #######
+app.js
+
 !.gitkeep
 release/
 bower_components/

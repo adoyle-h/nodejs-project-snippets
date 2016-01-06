@@ -32,23 +32,23 @@
 - 依赖: 无
 - 第三方依赖: rfr, lodash
 
-建议放置在项目根目录下
+`include.js` 文件建议放置在项目根目录下
 
 ### 日志（log）
 
 - 目的: 使用 Winston
-- 主要文件: log/
-- 依赖: config
+- 主要文件: lib/log/
+- 依赖: lib/config
 - 第三方依赖: npm i --save winston pretty-error lodash sprintf-js bytes cli-color
 
 ### 配置（config）
 
 - 目的: 二次封装 node-config
-- 主要文件: config.js, config/
+- 主要文件: lib/config.js, config/
 - 依赖: 无
 - 第三方依赖: npm i --save node-config
 
-建议 `config/` 目录放置在项目根目录下
+`config/` 目录必须放置在项目根目录下
 
 ### 子配置（sub_config）
 
@@ -63,7 +63,7 @@
 - 主要文件: gulpfile.js/
 - 第三方依赖: npm i --save-dev minimist gulp config-sp, 其他第三方依赖见 gulpfile.js/require.js
 
-必须放置在项目根目录下
+`gulpfile.js/` 目录必须放置在项目根目录下
 
 ### 自动化构建（scaffolding && generate）
 
@@ -99,8 +99,8 @@
     - 基于 lodash。将 mixin 拆分成多个文件，由核心函数、第三方工具、自定义函数组成，能控制顺序，分层管理。
     - 自动检测是否有重名函数，帮助整合各个 util 函数。
     - 取自己所需的，不要的可以轻松移除。
-- 主要文件: util/
-- 依赖: include, assert
+- 主要文件: lib/util/
+- 依赖: include, lib/assert
 - 第三方依赖: npm i --save lodash, 其他第三方依赖见 util/third_party.js
 
 ### 测试（test）
@@ -112,23 +112,23 @@
 - 主要文件: test/
 - 第三方依赖: npm i --save walkdir && npm i --save-dev mocha should chai config-sp
 
-建议放置在项目根目录下
+`test` 目录建议放置在项目根目录下
 
 ### 控制台（repl）
 
 - 目的: 增强 node repl，简化操作，方便调试。
 - 思路/特性: 预加载依赖文件，启动程序等等。
 - 主要文件: repl/
-- 依赖: include, util, consts, config, log
+- 依赖: include, lib/util, lib/consts, lib/config, lib/log
 - 第三方依赖: npm i --save shelljs lodash
 
-建议放置在项目根目录下
+`repl` 目录建议放置在项目根目录下
 
 ### 常量（consts）
 
 - 目的: 在一个文件中维护所有通用的常量
 - 思路/特性: 无
-- 主要文件: consts.js
+- 主要文件: lib/consts.js
 - 依赖: 无
 - 第三方依赖: 无
 
@@ -142,15 +142,15 @@
 
 ### 验证（validator）
 
-- 目的: 验证函数传入的实参
-- 主要文件: validator.js
+- 目的: 动态验证函数传入的实参
+- 主要文件: lib/validator.js
 - 第三方依赖: npm i --save joi lodash
 
 ### 应用程序（app）
 
 - 目的: 建立一套应用的公共接口，方便应用模块化、流程化。
 - 主要文件: 见 gulpfile.js/generators/application/
-- 依赖: include, log, config
+- 依赖: include, lib/log, lib/config
 - 第三方依赖: npm i --save wodule
 
 本文件通过 gulp generator 生成，执行：
