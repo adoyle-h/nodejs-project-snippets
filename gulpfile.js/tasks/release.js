@@ -211,6 +211,17 @@ module.exports = function(gulp, config, LL, args) {  // eslint-disable-line no-u
         );
     });
 
+    gulp.task('release:doc', ['doc:api'], function(done) {
+        var command = 'cp -rp doc/api/ gh-pages && \
+            cd gh-pages && \
+            git add . && \
+            git commit -m "update docs" && \
+            git push && \
+            cd - \
+        ';
+        LL.CP.exec(command, done);
+    });
+
     gulp.task('release', function(done) {
         LL.runSequence(
             'release:code',
