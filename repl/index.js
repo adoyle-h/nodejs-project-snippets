@@ -10,6 +10,7 @@ var contents = {
     os: require('os'),
     CONSTS: include('lib/consts'),
     logger: include('lib/log').create(module),
+    Errors: include('lib/error'),
 };
 
 repl({
