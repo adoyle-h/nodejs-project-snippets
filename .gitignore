@@ -9,6 +9,7 @@ upload/**
 !upload/.gitkeep
 temp/**
 !temp/.gitkeep
+gh-pages/
 
 ### Config
 
