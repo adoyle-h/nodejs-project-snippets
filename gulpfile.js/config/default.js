@@ -74,6 +74,8 @@ var config = {
                 '**/*.js',
                 '!node_modules/**',
                 '!release/**',
+                '!doc/**',
+                '!gh-pages/**',
             ],
             // see https://github.com/adametry/gulp-eslint#eslintoptions
             eslintOptions: {
