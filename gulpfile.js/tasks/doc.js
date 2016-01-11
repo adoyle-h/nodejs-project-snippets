@@ -7,7 +7,7 @@
  * @param  {Object}  args    The parsed arguments from comment line
  */
 module.exports = function(gulp, config, LL, args) {  // eslint-disable-line no-unused-vars
-    gulp.task('doc:api', function(done) {
+    gulp.task('doc:api', ['clean:doc:api'], function(done) {
         LL.CP.exec('jsduck', done);
     });
 

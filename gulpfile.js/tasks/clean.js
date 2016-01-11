@@ -28,5 +28,17 @@ module.exports = function(gulp, config, LL, args) {  // eslint-disable-line no-u
         return del(destFile);
     });
 
-    gulp.task('clean', ['clean:log', 'clean:release', 'clean:npm-package']);
+    gulp.task('clean:gh-pages', function() {
+        var del = LL.del;
+        return del(['gh-pages/*', '!gh-pages/.git', '!gh-pages/.gitignore']);
+    });
+
+    gulp.task('clean:doc:api', function() {
+        var del = LL.del;
+        return del('doc/API/*');
+    });
+
+    gulp.task('clean:doc', ['clean:doc:api']);
+
+    gulp.task('clean', ['clean:doc', 'clean:log', 'clean:release', 'clean:npm-package']);
 };
