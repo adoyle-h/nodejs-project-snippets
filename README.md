@@ -1,4 +1,8 @@
 # NodeJS Project Snippets
+![Node Version][Node Version Image]
+[![Npm Package Version][Npm Package Version Image]][Npm Package Version LINK]
+[![License][License Image]][License LINK]
+![NodeJS Package Dependencies][NodeJS Package Dependencies Link]
 
 > 如果说我看得比别人更远些，那是因为我站在巨人的肩膀上。  ——艾萨克·牛顿
 
@@ -220,3 +224,13 @@ gulp g -m module -o <输出文件路径>
 [Semver]: http://semver.org/lang/zh-CN/
 [Issue]: https://github.com/adoyle-h/nodejs-project-snippets/issues
 [LICENSE]: ./LICENSE
+
+
+<!-- links -->
+
+[Node Version Image]: https://img.shields.io/node/v/nodejs-project-snippets.svg
+[Npm Package Version Image]: https://img.shields.io/npm/v/nodejs-project-snippets.svg
+[Npm Package Version LINK]: https://www.npmjs.com/package/nodejs-project-snippets
+[License Image]: https://img.shields.io/github/license/adoyle-h/nodejs-project-snippets.svg
+[License LINK]: https://github.com/adoyle-h/nodejs-project-snippets/blob/develop/LICENSE
+[NodeJS Package Dependencies Link]: https://david-dm.org/adoyle-h/nodejs-project-snippets.svg
