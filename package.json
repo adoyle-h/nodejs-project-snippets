@@ -1,6 +1,6 @@
 {
   "name": "nodejs-project-snippets",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "common code snippets for nodejs project",
   "main": "app.js",
   "keywords": [
