@@ -215,15 +215,21 @@ gulp g -m module -o <输出文件路径>
 
 其余修改请 fork 本项目，打造属于你自己的 NodeJS Project Snippets 吧。
 
-## 版权声明（License）
+## 版权声明（Copyright and License）
 
-本项目代码遵循 BSD 3-clause License，具体请看 [LICENSE][] 文件的内容。
+Copyright (c) 2015-2016 ADoyle. The project is licensed under the **BSD 3-clause License**.
 
-<!-- 链接 -->
+See the [LICENSE][] file for the specific language governing permissions and limitations under the License.
+
+See the [NOTICE][] file distributed with this work for additional information regarding copyright ownership.
+
+
+<!-- links -->
 
 [Semver]: http://semver.org/lang/zh-CN/
 [Issue]: https://github.com/adoyle-h/nodejs-project-snippets/issues
 [LICENSE]: ./LICENSE
+[NOTICE]: ./NOTICE
 
 
 <!-- links -->
