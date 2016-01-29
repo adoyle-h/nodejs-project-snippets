@@ -74,14 +74,14 @@ var projectDir = process.env.NODE_ROOT || Path.resolve(__dirname, '.');
 // 默认会有一个 'proj'，指向 projectDir 的路径。
 init(projectDir, {
     map: {
-        'assets': 'assets',
-        'lib': 'lib',
-        'helpers': 'src/helpers',
-        'routers': 'src/routers',
-        'controllers': 'src/controllers',
-        'models': 'src/models',
-        'test': 'test',
-        'src': '.',
+        assets: 'assets',
+        lib: 'lib',
+        helpers: 'src/helpers',
+        routers: 'src/routers',
+        controllers: 'src/controllers',
+        models: 'src/models',
+        test: 'test',
+        src: '.',
     },
     global: true,
 });
