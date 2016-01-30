@@ -12,6 +12,37 @@
 
 这些模块都带有强烈的个人风格，也许有些地方你不喜欢。模块内部结构很简单，你可以很容易地进行修改和扩展，以符合你的需求。
 
+## TOC
+
+<!-- MarkdownTOC depth=3 -->
+
+- [为什么要写这个？](#为什么要写这个？)
+- [模块](#模块)
+    - [模块加载（include）](#模块加载（include）)
+    - [日志（log）](#日志（log）)
+    - [错误（error）](#错误（error）)
+    - [配置（config）](#配置（config）)
+    - [子配置（sub_config）](#子配置（sub_config）)
+    - [自动化（gulp）](#自动化（gulp）)
+    - [自动化构建（scaffolding && generate）](#自动化构建（scaffolding--generate）)
+    - [工具（util）](#工具（util）)
+    - [测试（test）](#测试（test）)
+    - [控制台（repl）](#控制台（repl）)
+    - [常量（consts）](#常量（consts）)
+    - [代码风格（code style guide）](#代码风格（code-style-guide）)
+    - [验证（validator）](#验证（validator）)
+    - [应用程序（app）](#应用程序（app）)
+    - [模块（module）](#模块（module）)
+    - [gitignore](#gitignore)
+- [为何没有测试？](#为何没有测试？)
+- [版本（Versioning）](#版本（versioning）)
+- [反馈问题或建议（Bug & Suggestion）](#反馈问题或建议（bug--suggestion）)
+- [如何做贡献（Contributing）](#如何做贡献（contributing）)
+- [版权声明（Copyright and License）](#版权声明（copyright-and-license）)
+
+<!-- /MarkdownTOC -->
+
+<a name="为什么要写这个？"></a>
 ## 为什么要写这个？
 
 我不想再造一个框架。从 express、koa 这种轻量级框架，到 hapi、sails、MEAN 这些重量级框架，又或者 meteor 这种全栈框架。它们都很不错，每个框架各有特点。有些人会被其中的某些优秀的特性所吸引，有些人又会因为某些糟糕设计而放弃它。  
@@ -23,12 +54,14 @@
 所以我只是想总结自己的代码片段，把好的东西抽离出来放在一个目录或者文件里。各位若觉得好用，拿过去改改便是。几个文件几个模块凑一起，说不定能拼出一个框架来。  
 自定义框架是最好的，因为那是依照你的需求搭建出来的，不会有多余的东西，使用起来也很灵活。
 
+<a name="模块"></a>
 ## 模块
 
 每个模块都是开箱即用的，有些模块暴露一个统一的配置接口 `init`。有些模块没有这个接口，直接复制代码就可以用。
 
 以下是各个模块的说明。
 
+<a name="模块加载（include）"></a>
 ### 模块加载（include）
 
 - 目的: 为了取代 `require('../../xxx')` 这种写法，相对路径不利于重构且容易写错。
@@ -38,6 +71,7 @@
 
 `include.js` 文件建议放置在项目根目录下
 
+<a name="日志（log）"></a>
 ### 日志（log）
 
 - 目的: 使用 Winston
@@ -45,6 +79,7 @@
 - 依赖: lib/config
 - 第三方依赖: npm i --save winston pretty-error lodash sprintf-js bytes cli-color
 
+<a name="错误（error）"></a>
 ### 错误（error）
 
 - 目的: 定义一套通用的自定义错误
@@ -54,6 +89,7 @@
 
 主要部分已独立成类库 [Ero.js](https://github.com/adoyle-h/Ero.js)
 
+<a name="配置（config）"></a>
 ### 配置（config）
 
 - 目的: 二次封装 node-config
@@ -63,12 +99,14 @@
 
 `config/` 目录必须放置在项目根目录下
 
+<a name="子配置（sub_config）"></a>
 ### 子配置（sub_config）
 
 - 目的: 为了让子模块能够管理自身的配置。
 
 该部分已独立成类库 [config-sp](https://github.com/adoyle-h/config-sp)
 
+<a name="自动化（gulp）"></a>
 ### 自动化（gulp）
 
 - 目的: 模块化 gulp 任务，拿来即用，无用则删。
@@ -78,6 +116,7 @@
 
 `gulpfile.js/` 目录必须放置在项目根目录下
 
+<a name="自动化构建（scaffolding--generate）"></a>
 ### 自动化构建（scaffolding && generate）
 
 - 目的: 自动化构建代码片段和目录结构，能够在项目生命周期中一直使用。
@@ -105,6 +144,7 @@
 
 执行 `gulp g -m task -n '<gulp 任务名称>'` 自动为你产生一个 gulp 任务文件。放置在 `gulpfile.js/tasks/` 目录下。
 
+<a name="工具（util）"></a>
 ### 工具（util）
 
 - 目的: 提供一系列辅助函数，提高编码效率
@@ -116,6 +156,7 @@
 - 依赖: include, lib/assert
 - 第三方依赖: npm i --save lodash, 其他第三方依赖见 util/third_party.js
 
+<a name="测试（test）"></a>
 ### 测试（test）
 
 - 目的: 基于 mocha 创建一整套测试流程框架
@@ -127,6 +168,7 @@
 
 `test` 目录建议放置在项目根目录下
 
+<a name="控制台（repl）"></a>
 ### 控制台（repl）
 
 - 目的: 增强 node repl，简化操作，方便调试。
@@ -137,6 +179,7 @@
 
 `repl` 目录建议放置在项目根目录下
 
+<a name="常量（consts）"></a>
 ### 常量（consts）
 
 - 目的: 在一个文件中维护所有通用的常量
@@ -145,6 +188,7 @@
 - 依赖: 无
 - 第三方依赖: 无
 
+<a name="代码风格（code-style-guide）"></a>
 ### 代码风格（code style guide）
 
 - 目的: 统一编码风格，让所有代码看起来像是一个人写的
@@ -153,12 +197,14 @@
 - 依赖: 无
 - 第三方依赖: npm i --save-dev eslint eslint-config-airbnb
 
+<a name="验证（validator）"></a>
 ### 验证（validator）
 
 - 目的: 动态验证函数传入的实参
 - 主要文件: lib/validator.js
 - 第三方依赖: npm i --save joi lodash
 
+<a name="应用程序（app）"></a>
 ### 应用程序（app）
 
 - 目的: 建立一套应用的公共接口，方便应用模块化、流程化。
@@ -173,6 +219,7 @@
 gulp g -m application
 ```
 
+<a name="模块（module）"></a>
 ### 模块（module）
 
 - 目的: 建立一套模块的公共接口，方便模块化、流程化。
@@ -187,6 +234,7 @@ gulp g -m application
 gulp g -m module -o <输出文件路径>
 ```
 
+<a name="gitignore"></a>
 ### gitignore
 
 - 目的: 项目中不应该存到 git 仓库里的文件
@@ -194,6 +242,7 @@ gulp g -m module -o <输出文件路径>
 - 依赖: 无
 - 第三方依赖: 无
 
+<a name="为何没有测试？"></a>
 ## 为何没有测试？
 
 1. 因为懒。
@@ -201,6 +250,7 @@ gulp g -m module -o <输出文件路径>
 3. 因为这个项目的代码又应用到许多别的项目，容易检测出是否有问题，而且问题会立刻得到修复。
 4. 终归还是懒...
 
+<a name="版本（versioning）"></a>
 ## 版本（Versioning）
 
 版本迭代遵循 SemVer 2.0.0 的规则。
@@ -209,16 +259,19 @@ gulp g -m module -o <输出文件路径>
 
 关于 SemVer 的更多信息，请访问 http://semver.org/。
 
+<a name="反馈问题或建议（bug--suggestion）"></a>
 ## 反馈问题或建议（Bug & Suggestion）
 
 欢迎使用 [Issue][] 提意见或者反馈 BUG
 
+<a name="如何做贡献（contributing）"></a>
 ## 如何做贡献（Contributing）
 
 本项目不接受 Pull Request，如果你有什么好的想法，或者改进的建议，请使用 [Issue][] 与我探讨。
 
 其余修改请 fork 本项目，打造属于你自己的 NodeJS Project Snippets 吧。
 
+<a name="版权声明（copyright-and-license）"></a>
 ## 版权声明（Copyright and License）
 
 Copyright (c) 2015-2016 ADoyle. The project is licensed under the **BSD 3-clause License**.
