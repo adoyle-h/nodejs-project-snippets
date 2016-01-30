@@ -87,9 +87,12 @@ var config = {
             // the entry point of application
             main: 'index.js',
             // nodemon ignore files
-            ignore: ['node_modules/*', 'bower_components/*', 'assets/*', 'bin/*', 'doc/*', 'logs/*', 'scripts/*', 'temp/*', 'test/*', 'gulpfile.js'],
+            ignore: [
+                'node_modules/*', 'bower_components/*', 'assets/*', 'bin/*', 'doc/*', 'logs/*',
+                'scripts/*', 'temp/*', 'test/*', 'gulpfile.js',
+            ],
             env: {
-                'NODE_ENV': 'development',
+                NODE_ENV: 'development',
             },
         },
 
@@ -117,8 +120,8 @@ var config = {
             dest: 'javascripts',
             extractSharedJs: true,
             entries: {
-                'app': ['./app.js'],
-                'page': ['./page.js'],
+                app: ['./app.js'],
+                page: ['./page.js'],
             },
             extensions: ['js'],
         },
@@ -127,7 +130,7 @@ var config = {
             src: 'stylesheets',
             dest: 'stylesheets',
             autoprefixer: {
-                'browsers': ['last 3 version'],
+                browsers: ['last 3 version'],
             },
             sass: {
                 indentedSyntax: true,

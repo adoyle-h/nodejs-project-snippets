@@ -16,7 +16,6 @@ module.exports = function(gulp, config, LL, args) {  // eslint-disable-line no-u
      *     -h --help  Show how to use the task
      */
     gulp.task('{{name}}', function() {
-        var showHelp = args.h || args.help || false;
-
+        var showHelp = args.h || args.help || false;  // eslint-disable-line no-unused-vars
     });
 };

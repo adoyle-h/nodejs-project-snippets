@@ -2,8 +2,8 @@
 
 exports.each = function(arr, iterator) {
     if (arr === null || typeof arr !== 'object') return undefined;
-
-    for (var key in arr) {
+    var key;
+    for (key in arr) {
         if (arr.hasOwnProperty(key)) {
             iterator(arr[key], key);
         }

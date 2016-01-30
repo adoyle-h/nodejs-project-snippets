@@ -1,7 +1,9 @@
-bin/**
-build/**
-config/**
 coverage/**
-docs/**
+doc/**
+gh-pages/**
 templates/**
 temp/**
+node_modules/**
+bower_components/**
+experimental/**
+logs/**

@@ -44,7 +44,9 @@ module.exports = function(gulp, config, LL, args) {  // eslint-disable-line no-u
         var destFile = util.format('%s/%s.tgz', dest, packageJSON.name);
         var packageName = src.split('/').pop();
 
-        var command = util.format('tar -czf %s -C %s %s', destFile, Path.resolve(src, '..'), packageName);
+        var command = util.format('tar -czf %s -C %s %s',
+            destFile, Path.resolve(src, '..'), packageName
+        );
 
         CP.exec(command, done);
     });
@@ -137,11 +139,10 @@ module.exports = function(gulp, config, LL, args) {  // eslint-disable-line no-u
         };
 
         var version = args.v || args.version;
-
+        var type;
         if (version) {
             bumpOpts.version = version;
         } else {
-            var type;
             if (args.b || args.break) {
                 type = 'major';
             } else if (args.f || args.feature) {
@@ -182,7 +183,9 @@ module.exports = function(gulp, config, LL, args) {  // eslint-disable-line no-u
         var conf = config.get('tasks.release.git-tag');
         var commitHash = conf.get('dest');
 
-        var command = util.format('git tag -a v%s %s -m "release version %s"', tag, commitHash, tag);
+        var command = util.format('git tag -a v%s %s -m "release version %s"',
+            tag, commitHash, tag
+        );
         CP.exec(command, done);
     });
 

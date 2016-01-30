@@ -10,11 +10,11 @@ var walk = require('walkdir');
  * @param  {Object}  args    The parsed arguments from comment line
  */
 module.exports = function(gulp, config, LL, args) { // eslint-disable-line no-unused-vars
-    /**** Load Generators ****/
+    // ******** Load Generators ********
     var GULP_GENERATORS_DIR = Path.resolve(__dirname, '../generators/');
 
     walk.sync(GULP_GENERATORS_DIR, {
-        no_recurse: true,
+        no_recurse: true,  // eslint-disable-line camelcase
     }, function(filepath, stats) {
         var task;
         if (stats.isFile()) {
@@ -26,7 +26,7 @@ module.exports = function(gulp, config, LL, args) { // eslint-disable-line no-un
             task(gulp, config, LL, args);
         }
     });
-    /*************************/
+    // ****** Load Generators End ******
 
     gulp.task('generate', function(done) {
         if (!args.m) return done(new Error('Missing generator module'));
