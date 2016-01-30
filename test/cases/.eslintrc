@@ -1,8 +1,10 @@
 {
     "env": {
-        "mocha": true,
+        "mocha": true
     },
     "globals": {
         "TEST_ROOT": false,
-    },
+        "Promise": false,
+        "sinon": false
+    }
 }
