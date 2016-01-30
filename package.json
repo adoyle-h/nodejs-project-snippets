@@ -48,6 +48,7 @@
     "wodule": "^0.1.0"
   },
   "devDependencies": {
+    "a-gulp-license": "^2.0.0",
     "chai": "^3.4.1",
     "cz-conventional-changelog": "^1.1.5",
     "del": "^2.2.0",
@@ -62,7 +63,6 @@
     "gulp-filter": "^3.0.1",
     "gulp-if": "^1.2.5",
     "gulp-ignore": "^1.2.1",
-    "gulp-license": "^1.0.0",
     "gulp-nodemon": "^1.0.5",
     "gulp-replace": "^0.5.4",
     "gulp-serve": "^0.3.0",

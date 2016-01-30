@@ -1,6 +1,7 @@
 'use strict';
 
 var common = {
+    sinceYear: '2015',
     copyrightYear: '2015-2016',
     author: 'ADoyle',
 };
@@ -15,6 +16,7 @@ var config = {
         license: {
             dest: 'LICENSE',
             year: common.copyrightYear,
+            sinceYear: common.sinceYear,  // sinceYear is prior to year
             author: common.author,  // default author for all files
         },
     },
@@ -52,6 +54,7 @@ var config = {
                 },
                 dest: './release',
                 year: common.copyrightYear,
+                sinceYear: common.sinceYear,  // sinceYear is prior to year
                 author: common.author,  // default author for all files
                 license: 'Apache',  // default license for all files
                 matches: [{  // it could be empty array if you do not need specify files with other license
