@@ -192,10 +192,10 @@
 ### 代码风格（code style guide）
 
 - 目的: 统一编码风格，让所有代码看起来像是一个人写的
-- 思路/特性: 使用 eslint，基于 airbnb/javascript 编写 .eslintrc
+- 思路/特性: 使用 eslint，基于我自己的[代码规范][my-eslint]，推荐每个人/每个团队都应该制定一套自己的代码规范
 - 主要文件: .eslintrc, .eslintignore
 - 依赖: 无
-- 第三方依赖: npm i --save-dev eslint eslint-config-airbnb
+- 第三方依赖: npm i --save-dev eslint eslint-config-adoyle-style
 
 <a name="验证（validator）"></a>
 ### 验证（validator）
@@ -283,6 +283,7 @@ See the [NOTICE][] file distributed with this work for additional information re
 
 <!-- links -->
 
+[my-eslint]: https://github.com/adoyle-h/eslint-config-adoyle-style
 [Semver]: http://semver.org/lang/zh-CN/
 [Issue]: https://github.com/adoyle-h/nodejs-project-snippets/issues
 [LICENSE]: ./LICENSE
