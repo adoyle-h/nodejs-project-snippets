@@ -1,0 +1,101 @@
+#!/usr/bin/env node
+
+'use strict';
+
+var Liftoff = require('liftoff');
+var Commander = require('commander');
+var Package = require('../package.json');
+var semver = require('semver');
+
+var commandName = 'nps';
+var configName = '.npsfile';
+
+Commander
+    // .usage('s -m application [options]')
+    .description('项目脚手架')
+    .option('-m, --module <module-name>', '指定生成器的名称')
+    .parse(process.argv);
+
+if (process.argv.slice(2).length === 0) {
+    Commander.help();
+}
+
+var log = console.log.bind(console); // eslint-disable-line no-console
+
+var nps = new Liftoff({
+    name: commandName,
+    moduleName: Package.name,
+    configName: configName,
+    processTitle: commandName,
+    // extensions: require('interpret').jsVariants,
+    // extensions: {},
+    // ^ automatically attempt to require module for any javascript variant
+    // supported by interpret.  e.g. coffee-script / livescript, etc
+    // v8flags: ['--harmony'] // to support all flags: require('v8flags')
+    completions: function() {
+        console.log('~~~~', arguments);
+    },
+});
+
+nps.on('requireFail', function(name, err) {
+    log('Unable to load:', name, err);
+});
+nps.on('respawn', function(flags, child) {
+    log('Detected node flags:', flags);
+    log('Respawned to PID:', child.pid);
+});
+
+nps.launch({
+    configPath: Commander.config,
+}, function (env) {
+    var config = this;
+
+    if (!env.modulePath) {
+        log('Local nps not found. Try running: npm install --save-dev nodejs-project-snippets');
+        process.exit(1);
+    }
+
+    if (env.configPath) {
+    }
+
+    // Check for semver difference between cli and local installation
+    if (semver.satisfies(env.modulePackage.version, Package.versionRange)) {
+        log('Warning: nps version mismatch:');
+        log('Global nps is', Package.version, ', which allows version range:', Package.versionRange);
+        log('Local nps is', env.modulePackage.version);
+    }
+
+    var npsConfig = require(env.configPath);
+
+    var nps = require(env.modulePath);
+    var modulePackage = require(env.modulePackage);
+
+    if (argv.verbose) {
+        log('LIFTOFF SETTINGS:', config);
+        log('CLI OPTIONS:', argv);
+        log('CWD:', env.cwd);
+        log('LOCAL MODULES PRELOADED:', env.require);
+        log('SEARCHING FOR:', env.configNameRegex);
+        log('FOUND CONFIG AT:', env.configPath);
+        log('CONFIG BASE DIR:', env.configBase);
+        log('YOUR LOCAL MODULE IS LOCATED:', env.modulePath);
+        log('LOCAL PACKAGE.JSON:', env.modulePackage);
+        log('CLI PACKAGE.JSON', require('../package'));
+    }
+
+    if (process.cwd() !== env.cwd) {
+        process.chdir(env.cwd);
+        log('Working directory changed to', env.cwd);
+    }
+
+    if (!env.modulePath) {
+        log('Local ', nps.moduleName, ' module not found in: ', env.cwd);
+        process.exit(1);
+    }
+
+    if (env.configPath) {
+        require(env.configPath);
+    } else {
+        log('No ', nps.configName, ' found.');
+    }
+});

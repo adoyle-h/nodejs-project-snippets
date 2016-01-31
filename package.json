@@ -1,12 +1,12 @@
 {
   "name": "nodejs-project-snippets",
   "version": "0.1.0",
+  "versionRange": "*",
   "description": "common code snippets for nodejs project",
-  "main": "app.js",
+  "main": "index.js",
   "keywords": [
     "snippet"
   ],
-  "private": true,
   "homepage": "https://github.com/adoyle-h/nodejs-project-snippets",
   "repository": {
     "type": "git",
@@ -21,37 +21,28 @@
     "test": "node test",
     "start": "node app"
   },
+  "bin": {
+    "nps": "./bin/nps"
+  },
   "engines": {
-    "node": "*"
+    "node": ">= 0.12.0"
   },
   "dependencies": {
-    "better-console": "^0.2.4",
-    "bytes": "^2.1.0",
-    "cli-color": "^1.1.0",
-    "config": "^1.16.0",
-    "config-sp": "^0.1.0",
-    "ero": "0.0.2",
-    "humps": "^1.0.0",
-    "joi": "^6.10.0",
     "lodash": "^3.10.1",
-    "lodash-deep": "^1.6.0",
-    "ms": "^0.7.1",
-    "node-uuid": "^1.4.6",
-    "pretty-error": "^2.0.0",
-    "random-string": "^0.1.2",
-    "rfr": "^1.2.3",
-    "sprintf-js": "^1.0.3",
-    "underscore.string": "^3.2.2",
-    "urlencode": "^1.1.0",
-    "walkdir": "0.0.11",
-    "winston": "^2.1.0",
-    "wodule": "^0.1.0"
+    "semver": "^5.1.0"
   },
   "devDependencies": {
     "a-gulp-license": "^2.0.0",
+    "better-console": "^0.2.4",
+    "bytes": "^2.1.0",
     "chai": "^3.4.1",
+    "cli-color": "^1.1.0",
+    "commander": "^2.9.0",
+    "config": "^1.16.0",
+    "config-sp": "^0.1.0",
     "cz-conventional-changelog": "^1.1.5",
     "del": "^2.2.0",
+    "ero": "0.0.2",
     "eslint": "^2.0.0-beta.2",
     "eslint-config-adoyle-style": "~0.1.1",
     "gulp": "^3.9.0",
@@ -67,13 +58,30 @@
     "gulp-replace": "^0.5.4",
     "gulp-serve": "^0.3.0",
     "gulp-watch": "^4.3.5",
+    "humps": "^1.0.0",
     "inquirer": "^0.11.0",
+    "interpret": "^1.0.0",
+    "joi": "^6.10.0",
+    "liftoff": "^2.2.0",
+    "lodash": "^3.10.1",
+    "lodash-deep": "^1.6.0",
     "minimist": "^1.1.1",
     "mocha": "^2.2.4",
     "mockery": "^1.4.0",
+    "ms": "^0.7.1",
+    "node-uuid": "^1.4.6",
+    "pretty-error": "^2.0.0",
+    "random-string": "^0.1.2",
+    "rfr": "^1.2.3",
     "run-sequence": "^1.1.1",
     "shelljs": "^0.5.3",
-    "should": "^7.1.1"
+    "should": "^7.1.1",
+    "sprintf-js": "^1.0.3",
+    "underscore.string": "^3.2.2",
+    "urlencode": "^1.1.0",
+    "walkdir": "0.0.11",
+    "winston": "^2.1.0",
+    "wodule": "^0.1.0"
   },
   "config": {
     "commitizen": {

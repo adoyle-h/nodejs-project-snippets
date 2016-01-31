@@ -1,0 +1,16 @@
+{
+    assert: 'lib/assert.js',
+    include: 'include.js',
+    log: 'lib/log/',
+    error: 'lib/error',
+    config: 'lib/config.js',
+    gulp: 'gulpfile.js/',
+    util: 'lib/util/',
+    test: 'test/',
+    repl: 'repl/',
+    consts: 'lib/consts.js',
+    codeStyle: true,
+    validator: 'lib/validator.js',
+    app: 'app.js',
+    gitignore: true,
+};

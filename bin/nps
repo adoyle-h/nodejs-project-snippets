@@ -1,0 +1,15 @@
+#!/usr/bin/env node
+
+'use strict';
+
+var Commander = require('commander');
+var Package = require('../package.json');
+
+Commander
+    .description('用于生成项目代码')
+    .version(Package.version)
+    .usage('nps [options] [command] [command-options]')
+    .command('generate', '生成代码片段')
+    .command('scaffold', '项目脚手架')
+    .option('-c, --config <path>', '指定配置文件的路径。默认为项目根目录下的 .npsfile')
+    .parse(process.argv);

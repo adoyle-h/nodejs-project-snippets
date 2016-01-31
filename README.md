@@ -18,6 +18,7 @@
 
 - [为什么要写这个？](#为什么要写这个？)
 - [模块](#模块)
+    - [cli](#cli)
     - [模块加载（include）](#模块加载（include）)
     - [日志（log）](#日志（log）)
     - [错误（error）](#错误（error）)
@@ -61,6 +62,12 @@
 
 以下是各个模块的说明。
 
+
+<a name="cli"></a>
+### cli
+
+详见 [doc/cli.md](./doc/cli.md)
+
 <a name="模块加载（include）"></a>
 ### 模块加载（include）
 
@@ -76,7 +83,7 @@
 
 - 目的: 使用 Winston
 - 主要文件: lib/log/
-- 依赖: lib/config
+- 依赖: include, lib/config
 - 第三方依赖: npm i --save winston pretty-error lodash sprintf-js bytes cli-color
 
 <a name="错误（error）"></a>

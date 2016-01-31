@@ -1,8 +1,6 @@
 'use strict';
 
 module.exports = {
-    gulp: {
-    },
     logger: {
         log: {  // 特定位置的日志开关
             publicFiles: true,  // 是否记录访问 public 文件的日志
@@ -28,5 +26,4 @@ module.exports = {
             tailable: true,  // 如果为 true，最新的日志在编号最小的文件里。否则相反。
         },
     },
-    tmpDir: 'upload',    // 如果你指定到项目目录下的其他路径，记得不要把临时文件提交到版本库
 };
