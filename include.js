@@ -2,7 +2,6 @@
 
 var Path = require('path');
 var rfr = require('rfr');
-var util = require('lodash');
 
 var Includers = {};
 
@@ -40,18 +39,16 @@ function createIncluder(alias, path) {
  */
 function init(rootPath, opts) {
     rootPath = rootPath || process.env.NODE_ROOT;
-    opts = util.extend({
-        map: {},
-        global: false,
-    }, opts);
+    var map = opts.map || {};
+    var shouldBeGlobal = opts.global || false;
 
     createIncluder('proj', rootPath);
 
-    util.map(opts.map, function(relativePath, alias) {
-        createIncluder(alias, Path.resolve(rootPath, relativePath));
+    Object.keys(map).forEach(function(key) {
+        createIncluder(key, Path.resolve(rootPath, map[key]));
     });
 
-    if (opts.global) {
+    if (shouldBeGlobal) {
         global.Includers = Includers;
         global.include = include;
     }
