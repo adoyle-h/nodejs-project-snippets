@@ -37,6 +37,7 @@
     "lodash-deep": "^1.6.0",
     "ms": "^0.7.1",
     "node-uuid": "^1.4.6",
+    "nps-log": "github:adoyle-h/nps-log#develop",
     "pretty-error": "^2.0.0",
     "random-string": "^0.1.2",
     "rfr": "^1.2.3",
@@ -45,6 +46,7 @@
     "urlencode": "^1.1.0",
     "walkdir": "0.0.11",
     "winston": "^2.1.0",
+    "winston-pretty-console": "^0.1.1",
     "wodule": "^0.1.0"
   },
   "devDependencies": {

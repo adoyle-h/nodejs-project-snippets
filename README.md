@@ -75,9 +75,9 @@
 ### 日志（log）
 
 - 目的: 使用 Winston
-- 主要文件: lib/log/
+- 主要文件: lib/log.js
 - 依赖: lib/config
-- 第三方依赖: npm i --save winston pretty-error lodash sprintf-js bytes cli-color
+- 第三方依赖: npm i --save winston nps-log winston-pretty-console lodash bytes
 
 <a name="错误（error）"></a>
 ### 错误（error）
