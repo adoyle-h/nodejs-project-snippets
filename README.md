@@ -18,27 +18,27 @@
 
 - [为什么要写这个？](#为什么要写这个？)
 - [模块](#模块)
-    - [模块加载（include）](#模块加载（include）)
-    - [日志（log）](#日志（log）)
-    - [错误（error）](#错误（error）)
-    - [配置（config）](#配置（config）)
-    - [子配置（sub_config）](#子配置（sub_config）)
-    - [自动化（gulp）](#自动化（gulp）)
-    - [自动化构建（scaffolding && generate）](#自动化构建（scaffolding--generate）)
-    - [工具（util）](#工具（util）)
-    - [测试（test）](#测试（test）)
-    - [控制台（repl）](#控制台（repl）)
-    - [常量（consts）](#常量（consts）)
-    - [代码风格（code style guide）](#代码风格（code-style-guide）)
-    - [验证（validator）](#验证（validator）)
-    - [应用程序（app）](#应用程序（app）)
-    - [模块（module）](#模块（module）)
+    - [模块加载 (include)](#模块加载-include)
+    - [日志 (log)](#日志-log)
+    - [错误 (error)](#错误-error)
+    - [配置 (config)](#配置-config)
+    - [子配置 (sub_config)](#子配置-sub_config)
+    - [自动化 (gulp)](#自动化-gulp)
+    - [自动化构建 (scaffolding && generate)](#自动化构建-scaffolding--generate)
+    - [工具 (util)](#工具-util)
+    - [测试 (test)](#测试-test)
+    - [控制台 (repl)](#控制台-repl)
+    - [常量 (consts)](#常量-consts)
+    - [代码风格 (code style guide)](#代码风格-code-style-guide)
+    - [验证 (validator)](#验证-validator)
+    - [应用程序 (app)](#应用程序-app)
+    - [模块 (module)](#模块-module)
     - [gitignore](#gitignore)
 - [为何没有测试？](#为何没有测试？)
-- [版本（Versioning）](#版本（versioning）)
-- [反馈问题或建议（Bug & Suggestion）](#反馈问题或建议（bug--suggestion）)
-- [如何做贡献（Contributing）](#如何做贡献（contributing）)
-- [版权声明（Copyright and License）](#版权声明（copyright-and-license）)
+- [版本 (Versioning)](#版本-versioning)
+- [反馈问题或建议 (Bug & Suggestion)](#反馈问题或建议-bug--suggestion)
+- [如何做贡献 (Contributing)](#如何做贡献-contributing)
+- [版权声明 (Copyright and License)](#版权声明-copyright-and-license)
 
 <!-- /MarkdownTOC -->
 
@@ -61,8 +61,8 @@
 
 以下是各个模块的说明。
 
-<a name="模块加载（include）"></a>
-### 模块加载（include）
+<a name="模块加载-include"></a>
+### 模块加载 (include)
 
 - 目的: 为了取代 `require('../../xxx')` 这种写法，相对路径不利于重构且容易写错。
 - 主要文件: include.js
@@ -71,16 +71,16 @@
 
 `include.js` 文件建议放置在项目根目录下
 
-<a name="日志（log）"></a>
-### 日志（log）
+<a name="日志-log"></a>
+### 日志 (log)
 
 - 目的: 使用 Winston
 - 主要文件: lib/log.js
-- 依赖: lib/config
+- 依赖: include, lib/config
 - 第三方依赖: npm i --save winston nps-log winston-pretty-console lodash bytes
 
-<a name="错误（error）"></a>
-### 错误（error）
+<a name="错误-error"></a>
+### 错误 (error)
 
 - 目的: 定义一套通用的自定义错误
 - 主要文件: lib/error
@@ -89,8 +89,8 @@
 
 主要部分已独立成类库 [Ero.js](https://github.com/adoyle-h/Ero.js)
 
-<a name="配置（config）"></a>
-### 配置（config）
+<a name="配置-config"></a>
+### 配置 (config)
 
 - 目的: 二次封装 node-config
 - 主要文件: lib/config.js, config/
@@ -99,15 +99,15 @@
 
 `config/` 目录必须放置在项目根目录下
 
-<a name="子配置（sub_config）"></a>
-### 子配置（sub_config）
+<a name="子配置-sub_config"></a>
+### 子配置 (sub_config)
 
 - 目的: 为了让子模块能够管理自身的配置。
 
 该部分已独立成类库 [config-sp](https://github.com/adoyle-h/config-sp)
 
-<a name="自动化（gulp）"></a>
-### 自动化（gulp）
+<a name="自动化-gulp"></a>
+### 自动化 (gulp)
 
 - 目的: 模块化 gulp 任务，拿来即用，无用则删。
 - 思路/特性: 将 gulp 任务拆分成各个单元，每个单元集合功能类似的子任务。一个单元完成其所有子任务。也能够单独调用子任务。
@@ -116,8 +116,8 @@
 
 `gulpfile.js/` 目录必须放置在项目根目录下
 
-<a name="自动化构建（scaffolding--generate）"></a>
-### 自动化构建（scaffolding && generate）
+<a name="自动化构建-scaffolding--generate"></a>
+### 自动化构建 (scaffolding && generate)
 
 - 目的: 自动化构建代码片段和目录结构，能够在项目生命周期中一直使用。
 - 主要文件: gulpfile.js/tasks/generate.js, gulpfile.js/generators/
@@ -144,8 +144,8 @@
 
 执行 `gulp g -m task -n '<gulp 任务名称>'` 自动为你产生一个 gulp 任务文件。放置在 `gulpfile.js/tasks/` 目录下。
 
-<a name="工具（util）"></a>
-### 工具（util）
+<a name="工具-util"></a>
+### 工具 (util)
 
 - 目的: 提供一系列辅助函数，提高编码效率
 - 思路/特性:
@@ -156,8 +156,8 @@
 - 依赖: include, lib/assert
 - 第三方依赖: npm i --save lodash, 其他第三方依赖见 util/third_party.js
 
-<a name="测试（test）"></a>
-### 测试（test）
+<a name="测试-test"></a>
+### 测试 (test)
 
 - 目的: 基于 mocha 创建一整套测试流程框架
 - 思路/特性:
@@ -168,8 +168,8 @@
 
 `test` 目录建议放置在项目根目录下
 
-<a name="控制台（repl）"></a>
-### 控制台（repl）
+<a name="控制台-repl"></a>
+### 控制台 (repl)
 
 - 目的: 增强 node repl，简化操作，方便调试。
 - 思路/特性: 预加载依赖文件，启动程序等等。
@@ -179,8 +179,8 @@
 
 `repl` 目录建议放置在项目根目录下
 
-<a name="常量（consts）"></a>
-### 常量（consts）
+<a name="常量-consts"></a>
+### 常量 (consts)
 
 - 目的: 在一个文件中维护所有通用的常量
 - 思路/特性: 无
@@ -188,8 +188,8 @@
 - 依赖: 无
 - 第三方依赖: 无
 
-<a name="代码风格（code-style-guide）"></a>
-### 代码风格（code style guide）
+<a name="代码风格-code-style-guide"></a>
+### 代码风格 (code style guide)
 
 - 目的: 统一编码风格，让所有代码看起来像是一个人写的
 - 思路/特性: 使用 eslint，基于我自己的[代码规范][my-eslint]，推荐每个人/每个团队都应该制定一套自己的代码规范
@@ -197,15 +197,15 @@
 - 依赖: 无
 - 第三方依赖: npm i --save-dev eslint eslint-config-adoyle-style
 
-<a name="验证（validator）"></a>
-### 验证（validator）
+<a name="验证-validator"></a>
+### 验证 (validator)
 
 - 目的: 动态验证函数传入的实参
 - 主要文件: lib/validator.js
 - 第三方依赖: npm i --save joi lodash
 
-<a name="应用程序（app）"></a>
-### 应用程序（app）
+<a name="应用程序-app"></a>
+### 应用程序 (app)
 
 - 目的: 建立一套应用的公共接口，方便应用模块化、流程化。
 - 主要文件: 见 gulpfile.js/generators/application/
@@ -219,8 +219,8 @@
 gulp g -m application
 ```
 
-<a name="模块（module）"></a>
-### 模块（module）
+<a name="模块-module"></a>
+### 模块 (module)
 
 - 目的: 建立一套模块的公共接口，方便模块化、流程化。
 - 主要文件: 见 gulpfile.js/generators/module/
@@ -250,8 +250,8 @@ gulp g -m module -o <输出文件路径>
 3. 因为这个项目的代码又应用到许多别的项目，容易检测出是否有问题，而且问题会立刻得到修复。
 4. 终归还是懒...
 
-<a name="版本（versioning）"></a>
-## 版本（Versioning）
+<a name="版本-versioning"></a>
+## 版本 (Versioning)
 
 版本迭代遵循 SemVer 2.0.0 的规则。
 
@@ -259,20 +259,20 @@ gulp g -m module -o <输出文件路径>
 
 关于 SemVer 的更多信息，请访问 http://semver.org/。
 
-<a name="反馈问题或建议（bug--suggestion）"></a>
-## 反馈问题或建议（Bug & Suggestion）
+<a name="反馈问题或建议-bug--suggestion"></a>
+## 反馈问题或建议 (Bug & Suggestion)
 
 欢迎使用 [Issue][] 提意见或者反馈 BUG
 
-<a name="如何做贡献（contributing）"></a>
-## 如何做贡献（Contributing）
+<a name="如何做贡献-contributing"></a>
+## 如何做贡献 (Contributing)
 
 本项目不接受 Pull Request，如果你有什么好的想法，或者改进的建议，请使用 [Issue][] 与我探讨。
 
 其余修改请 fork 本项目，打造属于你自己的 NodeJS Project Snippets 吧。
 
-<a name="版权声明（copyright-and-license）"></a>
-## 版权声明（Copyright and License）
+<a name="版权声明-copyright-and-license"></a>
+## 版权声明 (Copyright and License)
 
 Copyright (c) 2015-2016 ADoyle. The project is licensed under the **BSD 3-clause License**.
 
@@ -290,7 +290,7 @@ See the [NOTICE][] file distributed with this work for additional information re
 [NOTICE]: ./NOTICE
 
 
-<!-- links -->
+<!-- Badges links -->
 
 [Node Version Image]: https://img.shields.io/node/v/nodejs-project-snippets.svg
 [Npm Package Version Image]: https://img.shields.io/npm/v/nodejs-project-snippets.svg
