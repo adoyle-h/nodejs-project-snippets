@@ -8,6 +8,7 @@ module.exports = {
     CP: 'child_process',
 
     // third-party libraries
+    walkdir: 'walkdir',
     async: 'async',
     ms: 'ms',
     del: 'del',
