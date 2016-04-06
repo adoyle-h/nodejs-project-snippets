@@ -51,8 +51,8 @@
   },
   "devDependencies": {
     "a-gulp-license": "^2.0.0",
+    "ad-conventional-changelog": "^0.1.0",
     "chai": "^3.4.1",
-    "cz-conventional-changelog": "^1.1.5",
     "del": "^2.2.0",
     "eslint": "^2.2.0",
     "eslint-config-adoyle-style": "^0.2.0",
@@ -60,7 +60,7 @@
     "gulp-bump": "^0.3.1",
     "gulp-cached": "^1.1.0",
     "gulp-changed": "^1.2.1",
-    "gulp-conventional-changelog": "^0.7.0",
+    "gulp-conventional-changelog": "^1.1.0",
     "gulp-eslint": "^2.0.0-rc-3",
     "gulp-filter": "^3.0.1",
     "gulp-if": "^1.2.5",
@@ -79,7 +79,7 @@
   },
   "config": {
     "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
+      "path": "./node_modules/ad-conventional-changelog"
     }
   }
 }
