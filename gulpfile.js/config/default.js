@@ -1,32 +1,21 @@
 'use strict';
 
-var common = {
-    sinceYear: '2015',
-    copyrightYear: '2015-2016',
-    author: 'ADoyle',
-};
-
 /**
  * It will be better if you would comment every property to explain how it effects.
  *
  * Relative paths are relative to the directory where the process starts.
  */
 var config = {
-    generators: {
-        license: {
-            dest: 'LICENSE',
-            year: common.copyrightYear,
-            sinceYear: common.sinceYear,  // sinceYear is prior to year
-            author: common.author,  // default author for all files
-        },
-    },
     tasks: {
+        <%_ if (tasks.backup) { _%>
         backup: {
             log: {
                 src: 'logs/*',
                 desc: 'backup/*',
             },
         },
+        <%_ } _%>
+        <%_ if (tasks.clean) { _%>
 
         /**
          * clean task uses `sindresorhus/del`, whose glob rules are different from gulp's.
@@ -37,6 +26,8 @@ var config = {
                 src: ['./logs/**/*', '!./logs/.gitkeep'],
             },
         },
+        <%_ } _%>
+        <%_ if (tasks.release) { _%>
 
         release: {
             changelog: {
@@ -53,9 +44,9 @@ var config = {
                     base: './',
                 },
                 dest: './release',
-                year: common.copyrightYear,
-                sinceYear: common.sinceYear,  // sinceYear is prior to year
-                author: common.author,  // default author for all files
+                year: '2015-2016',
+                sinceYear: '2015',  // sinceYear is prior to year
+                author: 'author-name',  // default author for all files
                 license: 'Apache',  // default license for all files
                 matches: [{  // it could be empty array if you do not need specify files with other license
                     glob: ['**/*.js'],
@@ -71,6 +62,8 @@ var config = {
                 dest: 'master',  // branch name or commit hash
             },
         },
+        <%_ } _%>
+        <%_ if (tasks.lint) { _%>
 
         lint: {
             src: [
@@ -85,6 +78,8 @@ var config = {
                 quiet: true,
             },
         },
+        <%_ } _%>
+        <%_ if (tasks.server) { _%>
 
         server: {
             // the entry point of application
@@ -98,22 +93,18 @@ var config = {
                 NODE_ENV: 'development',
             },
         },
+        <%_ } _%>
+        <%_ if (tasks.watch) { _%>
 
         watch: {
         },
+        <%_ } _%>
+        <%_ if (tasks.test) { _%>
 
         test: {
             mochaRunner: '../../test/index',
         },
-
-        font: {
-
-        },
-
-        image: {
-
-        },
-
+        <%_ } _%>
         html: {
 
         },

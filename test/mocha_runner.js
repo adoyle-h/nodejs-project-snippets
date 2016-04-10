@@ -40,7 +40,9 @@ function init() {
         global[key] = val;
     });
 
+    <%_ if (locals.plugins) { _%>
     mocha.addFile(resolve('plugins'));
+    <%_ } _%>
     loadCases(mocha);
 
     return mocha;

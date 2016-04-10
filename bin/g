@@ -1,0 +1,101 @@
+#!/usr/bin/env node
+/* eslint-disable no-console */
+'use strict';
+
+var FS = require('fs');
+var Path = require('path');
+var yeoman = require('yeoman-environment');
+var minimist = require('minimist');
+
+require('loud-rejection')();
+
+var args = minimist(process.argv.slice(2));
+
+var env = yeoman.createEnv();
+
+// see https://github.com/yeoman/environment/blob/master/lib/util/log.js
+var log = env.adapter.log;
+
+process.on('uncaughtException', function(err) {
+    log.error('Uncaught exception occurred in application!', err.stack || err.message || err);
+    process.exit(2);
+});
+
+env.on('error', function(err) {
+    log.error('[Error]', process.argv.slice(2).join(' '), '\n');
+    log.error(err.stack);
+    process.exit(1);
+});
+
+
+var name = 'g';
+
+var command = args['_'][0];
+var opts = {};
+
+var registered = {};
+
+function register(filename) {
+    var namespace = filename.replace(/\.js$/, '');
+    if (registered[namespace]) return undefined;
+
+    var generator;
+
+    try {
+        generator = require(Path.resolve(__dirname, '..', 'generators', filename));
+        env.registerStub(generator, namespace);
+        registered[namespace] = generator;
+    } catch(err) {
+        if (err.message.startsWith('Cannot find module')) {
+            console.error('[register]', err.stack);
+            process.exit(0);
+        } else {
+            throw err;
+        }
+    }
+}
+
+if (args.debug) {
+    process.env.DEBUG = 'yeoman:generator';
+}
+
+var files;
+if (args.h || args.help) {
+    if (command) {
+        register(command);
+    } else {
+        files = FS.readdirSync(__dirname);
+        files.forEach(function(filename) {
+            if (filename === '_helper' ||
+                filename.startsWith('.')
+            ) {
+                return undefined;
+            }
+            register(filename);
+        });
+    }
+
+    log.write(env.help(name));
+    process.exit(0);
+}
+
+global.projectDir = Path.resolve(__dirname, '..');
+
+function run() {
+    env.run(command, opts, function(err) {
+        if (err) {
+            log.error(err);
+        }
+    });
+}
+
+register(command);
+
+if (args.l || args.lookup) {
+    env.lookup(run);
+} else {
+    run();
+}
+
+module.exports = env;
+

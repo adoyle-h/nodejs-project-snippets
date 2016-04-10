@@ -1,5 +1,5 @@
 ####### Project Ignores #######
-app.js
+.yo-rc.json
 
 !.gitkeep
 release/
@@ -14,6 +14,7 @@ gh-pages/
 ### Config
 
 config/**
+!config/index.js
 !config/default*
 
 test/config/**

@@ -1,5 +1,8 @@
 'use strict';
 
+<%_ if (locals.useLodash) { _%>
+module.exports = require('lodash');
+<%_ } else { _%>
 exports.each = function(arr, iterator) {
     if (arr === null || typeof arr !== 'object') return undefined;
     var key;
@@ -18,3 +21,4 @@ exports.keys = function(object) {
 exports.isFunction = function(param) {
     return typeof param === 'function';
 };
+<%_ } _%>

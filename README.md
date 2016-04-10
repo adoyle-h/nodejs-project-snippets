@@ -1,4 +1,4 @@
-# NodeJS Project Snippets
+# A NodeJS Project Snippets
 ![Node Version][Node Version Image]
 [![Npm Package Version][Npm Package Version Image]][Npm Package Version LINK]
 [![License][License Image]][License LINK]
@@ -17,28 +17,29 @@
 <!-- MarkdownTOC depth=3 -->
 
 - [为什么要写这个？](#为什么要写这个？)
+- [使用本项目生成项目 \(scaffolding\)](#使用本项目生成项目-scaffolding)
 - [模块](#模块)
-    - [模块加载 (include)](#模块加载-include)
-    - [日志 (log)](#日志-log)
-    - [错误 (error)](#错误-error)
-    - [配置 (config)](#配置-config)
-    - [子配置 (sub_config)](#子配置-sub_config)
-    - [自动化 (gulp)](#自动化-gulp)
-    - [自动化构建 (scaffolding && generate)](#自动化构建-scaffolding--generate)
-    - [工具 (util)](#工具-util)
-    - [测试 (test)](#测试-test)
-    - [控制台 (repl)](#控制台-repl)
-    - [常量 (consts)](#常量-consts)
-    - [代码风格 (code style guide)](#代码风格-code-style-guide)
-    - [验证 (validator)](#验证-validator)
-    - [应用程序 (app)](#应用程序-app)
-    - [模块 (module)](#模块-module)
+    - [模块加载 \(include\)](#模块加载-include)
+    - [日志 \(log\)](#日志-log)
+    - [错误 \(error\)](#错误-error)
+    - [配置 \(config\)](#配置-config)
+    - [子配置 \(sub_config\)](#子配置-sub_config)
+    - [自动化 \(gulp\)](#自动化-gulp)
+    - [自动化构建 \(scaffolding && generate\)](#自动化构建-scaffolding--generate)
+    - [工具 \(util\)](#工具-util)
+    - [测试 \(test\)](#测试-test)
+    - [控制台 \(repl\)](#控制台-repl)
+    - [常量 \(consts\)](#常量-consts)
+    - [代码风格 \(code style guide\)](#代码风格-code-style-guide)
+    - [验证 \(validator\)](#验证-validator)
+    - [应用程序 \(app\)](#应用程序-app)
+    - [模块 \(module\)](#模块-module)
     - [gitignore](#gitignore)
 - [为何没有测试？](#为何没有测试？)
-- [版本 (Versioning)](#版本-versioning)
-- [反馈问题或建议 (Bug & Suggestion)](#反馈问题或建议-bug--suggestion)
-- [如何做贡献 (Contributing)](#如何做贡献-contributing)
-- [版权声明 (Copyright and License)](#版权声明-copyright-and-license)
+- [版本 \(Versioning\)](#版本-versioning)
+- [反馈问题或建议 \(Bug & Suggestion\)](#反馈问题或建议-bug--suggestion)
+- [如何做贡献 \(Contributing\)](#如何做贡献-contributing)
+- [版权声明 \(Copyright and License\)](#版权声明-copyright-and-license)
 
 <!-- /MarkdownTOC -->
 
@@ -53,6 +54,22 @@
 而这个项目里的代码，主要是一些代码组织的思路，和一些经过二次封装的类库。  
 所以我只是想总结自己的代码片段，把好的东西抽离出来放在一个目录或者文件里。各位若觉得好用，拿过去改改便是。几个文件几个模块凑一起，说不定能拼出一个框架来。  
 自定义框架是最好的，因为那是依照你的需求搭建出来的，不会有多余的东西，使用起来也很灵活。
+
+<a name="使用本项目生成项目-scaffolding"></a>
+## 使用本项目生成项目 (scaffolding)
+
+1. 全局安装
+
+    `npm i -g generator-anps yo`
+
+2. 创建 node 项目
+
+    ```sh
+    mkdir project && cd project
+    npm init
+    ```
+
+3. 执行 `yo anps` 构建本项目风格的项目
 
 <a name="模块"></a>
 ## 模块
@@ -93,9 +110,9 @@
 ### 配置 (config)
 
 - 目的: 二次封装 node-config
-- 主要文件: lib/config.js, config/
+- 主要文件: config/
 - 依赖: 无
-- 第三方依赖: npm i --save node-config
+- 第三方依赖: npm i --save config
 
 `config/` 目录必须放置在项目根目录下
 
@@ -120,29 +137,22 @@
 ### 自动化构建 (scaffolding && generate)
 
 - 目的: 自动化构建代码片段和目录结构，能够在项目生命周期中一直使用。
-- 主要文件: gulpfile.js/tasks/generate.js, gulpfile.js/generators/
-- 依赖: gulpfile.js/
-- 第三方依赖: gulp
+- 主要文件: bin/g, generators/
+- 依赖: 无
+- 第三方依赖: yeoman-environment, yeoman-generator, lodash, bluebird, joi, loud-rejection, minimist
 
-实际上利用 gulp 来实现代码生成器（generator），每个生成器就是一个 gulp 任务。  
-每个生成器的任务名字必须以 "generator:" 开头，文件名必须以 "generator:" 后面的名字命名。
-
-执行 `gulp g -m <generator name> <args>` 以执行指定构建任务。  
-`<generator name>` 为生成器的任务名称，这里只需要输入 "generator:" 后面的名字就行了。  
-`<args>` 为任务的参数，根据每个任务的实际要求来传。
-
-为了简化输入，你可以设置别名如 `alias g='gulp g -m'`，这样就可以通过 `g <generator name> <args>` 来执行生成器了。
-
-其实这个跟 yeoman、slush 类似，只是这两个工具需要将构建任务打包发布。  
-而在项目构建过程中，构建的代码必然也需要随时修改的。所以利用 gulp 自身来完成构建任务，更灵活且易修改。
+实际上利用 `yeoman-generator` 来实现代码生成器（generator）。
+基于 `yeoman-environment` 写了一个启动脚本 `bin/g`，使用方法如： `./bin/g <generator-name>`。
 
 #### 自动构建生成器
 
-执行 `gulp g -m generator -n <生成器名称>` 自动为你产生一个生成器。放置在 `gulpfile.js/generators/` 目录下。
+执行 `./bin/g generate` 为你产生一个生成器。放置在 `generators/` 目录下。
+
+剩下的交由你基于 `yeoman-generator` 来规划自己的项目生成器。
 
 #### 自动构建 gulp 任务
 
-执行 `gulp g -m task -n '<gulp 任务名称>'` 自动为你产生一个 gulp 任务文件。放置在 `gulpfile.js/tasks/` 目录下。
+执行 `./bin/g task` 自动为你产生一个 gulp 任务文件。放置在 `gulpfile.js/tasks/` 目录下。
 
 <a name="工具-util"></a>
 ### 工具 (util)
@@ -153,8 +163,8 @@
     - 自动检测是否有重名函数，帮助整合各个 util 函数。
     - 取自己所需的，不要的可以轻松移除。
 - 主要文件: lib/util/
-- 依赖: include, lib/assert
-- 第三方依赖: npm i --save lodash, 其他第三方依赖见 util/third_party.js
+- 依赖: 无
+- 第三方依赖: npm i --save lodash
 
 <a name="测试-test"></a>
 ### 测试 (test)
@@ -164,7 +174,7 @@
     - 插件化测试套件
     - 分层测试（单元测试、集成测试、端到端测试）
 - 主要文件: test/
-- 第三方依赖: npm i --save walkdir && npm i --save-dev mocha should chai config-sp
+- 第三方依赖: npm i --save-dev walkdir mocha should chai config-sp
 
 `test` 目录建议放置在项目根目录下
 
@@ -174,7 +184,7 @@
 - 目的: 增强 node repl，简化操作，方便调试。
 - 思路/特性: 预加载依赖文件，启动程序等等。
 - 主要文件: repl/
-- 依赖: include, lib/util, lib/consts, lib/config, lib/log
+- 依赖: 无
 - 第三方依赖: npm i --save shelljs lodash
 
 `repl` 目录建议放置在项目根目录下
@@ -208,30 +218,22 @@
 ### 应用程序 (app)
 
 - 目的: 建立一套应用的公共接口，方便应用模块化、流程化。
-- 主要文件: 见 gulpfile.js/generators/application/
+- 主要文件: app.js
 - 依赖: include, lib/log, lib/config
 - 第三方依赖: npm i --save wodule
-
-本文件通过 gulp generator 生成，执行：
-
-```sh
-# 默认将在项目根目录生成 app.js 文件
-gulp g -m application
-```
 
 <a name="模块-module"></a>
 ### 模块 (module)
 
 - 目的: 建立一套模块的公共接口，方便模块化、流程化。
-- 主要文件: 见 gulpfile.js/generators/module/
+- 主要文件: 见 generators/module/
 - 依赖: 无
 - 第三方依赖: npm i --save wodule
 
-本文件通过 gulp generator 生成，执行：
+可以通过 generator 自动为你生成一个模块，执行：
 
 ```sh
-# 若没有写 -o，默认将在项目根目录生成 new_module.js 文件
-gulp g -m module -o <输出文件路径>
+./bin/g module
 ```
 
 <a name="gitignore"></a>
@@ -245,10 +247,7 @@ gulp g -m module -o <输出文件路径>
 <a name="为何没有测试？"></a>
 ## 为何没有测试？
 
-1. 因为懒。
-2. 因为是从我的实际项目中提炼出来的，经过了时间的检验。
-3. 因为这个项目的代码又应用到许多别的项目，容易检测出是否有问题，而且问题会立刻得到修复。
-4. 终归还是懒...
+1. 因为懒。 OTL
 
 <a name="版本-versioning"></a>
 ## 版本 (Versioning)
@@ -285,16 +284,16 @@ See the [NOTICE][] file distributed with this work for additional information re
 
 [my-eslint]: https://github.com/adoyle-h/eslint-config-adoyle-style
 [Semver]: http://semver.org/lang/zh-CN/
-[Issue]: https://github.com/adoyle-h/nodejs-project-snippets/issues
+[Issue]: https://github.com/adoyle-h/a-nodejs-project-snippets/issues
 [LICENSE]: ./LICENSE
 [NOTICE]: ./NOTICE
 
 
 <!-- Badges links -->
 
-[Node Version Image]: https://img.shields.io/node/v/nodejs-project-snippets.svg
-[Npm Package Version Image]: https://img.shields.io/npm/v/nodejs-project-snippets.svg
-[Npm Package Version LINK]: https://www.npmjs.com/package/nodejs-project-snippets
-[License Image]: https://img.shields.io/github/license/adoyle-h/nodejs-project-snippets.svg
-[License LINK]: https://github.com/adoyle-h/nodejs-project-snippets/blob/develop/LICENSE
-[NodeJS Package Dependencies Link]: https://david-dm.org/adoyle-h/nodejs-project-snippets.svg
+[Node Version Image]: https://img.shields.io/node/v/generator-anps.svg
+[Npm Package Version Image]: https://img.shields.io/npm/v/generator-anps.svg
+[Npm Package Version LINK]: https://www.npmjs.com/package/generator-anps
+[License Image]: https://img.shields.io/github/license/adoyle-h/a-nodejs-project-snippets.svg
+[License LINK]: https://github.com/adoyle-h/a-nodejs-project-snippets/blob/develop/LICENSE
+[NodeJS Package Dependencies Link]: https://david-dm.org/adoyle-h/a-nodejs-project-snippets.svg

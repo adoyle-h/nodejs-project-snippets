@@ -1,10 +1,12 @@
 {
-  "name": "nodejs-project-snippets",
+  "name": "generator-anps",
   "version": "0.1.0",
   "description": "common code snippets for nodejs project",
-  "main": "app.js",
+  "main": "generators/app",
   "keywords": [
-    "snippet"
+    "snippet",
+    "generator",
+    "yeoman-generator"
   ],
   "private": true,
   "homepage": "https://github.com/adoyle-h/nodejs-project-snippets",
@@ -22,64 +24,20 @@
     "start": "node app"
   },
   "engines": {
-    "node": "*"
+    "node": ">=4.0.0"
   },
   "dependencies": {
-    "better-console": "^0.2.4",
-    "bytes": "^2.1.0",
-    "cli-color": "^1.1.0",
-    "config": "^1.16.0",
-    "config-sp": "^0.1.0",
-    "ero": "^0.2.0",
-    "humps": "^1.0.0",
-    "joi": "^6.10.0",
+    "bluebird": "^3.3.5",
+    "joi": "^8.0.5",
     "lodash": "^3.10.1",
-    "lodash-deep": "^1.6.0",
-    "ms": "^0.7.1",
-    "node-uuid": "^1.4.6",
-    "nps-log": "github:adoyle-h/nps-log#develop",
-    "pretty-error": "^2.0.0",
-    "random-string": "^0.1.2",
-    "rfr": "^1.2.3",
-    "sprintf-js": "^1.0.3",
-    "underscore.string": "^3.2.2",
-    "urlencode": "^1.1.0",
-    "walkdir": "0.0.11",
-    "winston": "^2.1.0",
-    "winston-pretty-console": "^0.1.1",
-    "wodule": "^0.1.0"
+    "semver": "^5.1.0",
+    "yeoman-generator": "^0.22.5"
   },
   "devDependencies": {
-    "a-gulp-license": "^2.0.0",
-    "ad-conventional-changelog": "^0.1.0",
-    "chai": "^3.4.1",
-    "del": "^2.2.0",
     "eslint": "^2.7.0",
-    "eslint-config-adoyle-style": "^0.3.2",
-    "gulp": "^3.9.0",
-    "gulp-bump": "^0.3.1",
-    "gulp-cached": "^1.1.0",
-    "gulp-changed": "^1.2.1",
-    "gulp-conventional-changelog": "^1.1.0",
-    "gulp-eslint": "^2.0.0",
-    "gulp-filter": "^3.0.1",
-    "gulp-if": "^1.2.5",
-    "gulp-ignore": "^1.2.1",
-    "gulp-nodemon": "^1.0.5",
-    "gulp-replace": "^0.5.4",
-    "gulp-serve": "^0.3.0",
-    "gulp-watch": "^4.3.5",
-    "inquirer": "^0.11.0",
-    "minimist": "^1.1.1",
-    "mocha": "^2.2.4",
-    "mockery": "^1.4.0",
-    "run-sequence": "^1.1.1",
-    "shelljs": "^0.5.3",
-    "should": "^7.1.1"
+    "gulp": "^3.9.0"
   },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/ad-conventional-changelog"
-    }
-  }
+  "files": [
+    "generators/app"
+  ]
 }

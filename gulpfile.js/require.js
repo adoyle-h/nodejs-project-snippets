@@ -1,13 +1,13 @@
 'use strict';
 
 module.exports = {
-    // native libraries
+    // Native libraries
     Path: 'path',
     FS: 'fs',
     nodeUtil: 'util',
     CP: 'child_process',
 
-    // third-party libraries
+    // Third-party libraries
     walkdir: 'walkdir',
     async: 'async',
     ms: 'ms',
@@ -15,7 +15,7 @@ module.exports = {
     runSequence: 'run-sequence',
     inquirer: 'inquirer',
 
-    // third-party libraries prefixed with 'gulp-'
+    // Third-party libraries prefixed with 'gulp-'
     bump: 'gulp-bump',
     changed: 'gulp-changed',
     nodemon: 'gulp-nodemon',
@@ -27,6 +27,6 @@ module.exports = {
     changelog: 'gulp-conventional-changelog',
     replace: 'gulp-replace',
 
-    // data
+    // Data, which path related to process.cwd()
     packageJSON: './package.json',
 };

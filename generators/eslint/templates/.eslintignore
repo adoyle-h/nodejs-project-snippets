@@ -1,0 +1,8 @@
+coverage/**
+doc/**
+gh-pages/**
+templates/**
+temp/**
+node_modules/**
+bower_components/**
+logs/**

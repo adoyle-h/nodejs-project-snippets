@@ -3,8 +3,10 @@
         "mocha": true
     },
     "globals": {
+        <%_ if (locals.adoyleStyle) { _%>
         "TEST_ROOT": false,
         "Promise": false,
         "sinon": false
+        <%_ } _%>
     }
 }
