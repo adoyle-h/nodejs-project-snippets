@@ -34,6 +34,10 @@ module.exports = extend({
 
         if (this.defaults.adoyleStyle) {
             deps.push({
+                depName: 'better-console', version: '0.2.4', opts: {save: true},
+            }, {
+                depName: 'debug', version: '2.2.0', opts: {save: true},
+            }, {
                 depName: 'ms', version: '0.7.1', opts: {save: true},
             }, {
                 depName: 'node-uuid', version: '1.4.6', opts: {save: true},
