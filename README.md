@@ -28,6 +28,7 @@
         - [自动构建生成器](#自动构建生成器)
         - [自动构建 gulp 任务](#自动构建-gulp-任务)
     - [工具 (util)](#工具-util)
+    - [调试 (debug)](#调试-debug)
     - [测试 (test)](#测试-test)
     - [控制台 (repl)](#控制台-repl)
     - [常量 (consts)](#常量-consts)
@@ -159,6 +160,12 @@
 - 第三方依赖: npm i --save utility-maker, 其他第三方依赖见 util/third_party.js
 
 该部分已独立成类库 [utility-maker](https://github.com/adoyle-h/utility-maker)
+
+<a name="调试-debug"></a>
+### 调试 (debug)
+
+- 思路: 我们需要一个简单又方便的工具来进行调试。最好能够保留调试日志代码，同时不要对正常开发产生过多干扰，也不要因此增加应用开销。
+- [debug](https://github.com/visionmedia/debug) is awesome!!!
 
 <a name="测试-test"></a>
 ### 测试 (test)
