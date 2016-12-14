@@ -14,9 +14,9 @@
 
 ## TOC
 
-<!-- MarkdownTOC depth=3 -->
+<!-- MarkdownTOC depth=3 GFM -->
 
-- [为什么要写这个？](#为什么要写这个？)
+- [为什么要写这个？](#为什么要写这个)
 - [模块](#模块)
     - [模块加载 (include)](#模块加载-include)
     - [日志 (log)](#日志-log)
@@ -25,6 +25,8 @@
     - [子配置 (sub_config)](#子配置-sub_config)
     - [自动化 (gulp)](#自动化-gulp)
     - [自动化构建 (scaffolding && generate)](#自动化构建-scaffolding--generate)
+        - [自动构建生成器](#自动构建生成器)
+        - [自动构建 gulp 任务](#自动构建-gulp-任务)
     - [工具 (util)](#工具-util)
     - [测试 (test)](#测试-test)
     - [控制台 (repl)](#控制台-repl)
@@ -34,7 +36,7 @@
     - [应用程序 (app)](#应用程序-app)
     - [模块 (module)](#模块-module)
     - [gitignore](#gitignore)
-- [为何没有测试？](#为何没有测试？)
+- [为何没有测试？](#为何没有测试)
 - [版本 (Versioning)](#版本-versioning)
 - [反馈问题或建议 (Bug & Suggestion)](#反馈问题或建议-bug--suggestion)
 - [如何做贡献 (Contributing)](#如何做贡献-contributing)
@@ -149,12 +151,14 @@
 
 - 目的: 提供一系列辅助函数，提高编码效率
 - 思路/特性:
-    - 基于 lodash。将 mixin 拆分成多个文件，由核心函数、第三方工具、自定义函数组成，能控制顺序，分层管理。
+    - 将函数集拆分成多个文件，由核心函数、第三方工具、自定义函数组成，能控制顺序，分层管理。
     - 自动检测是否有重名函数，帮助整合各个 util 函数。
-    - 取自己所需的，不要的可以轻松移除。
+    - 根据项目取自己所需，不要的可以轻松移除。
 - 主要文件: lib/util/
-- 依赖: include, lib/assert
-- 第三方依赖: npm i --save lodash, 其他第三方依赖见 util/third_party.js
+- 依赖: 无
+- 第三方依赖: npm i --save utility-maker, 其他第三方依赖见 util/third_party.js
+
+该部分已独立成类库 [utility-maker](https://github.com/adoyle-h/utility-maker)
 
 <a name="测试-test"></a>
 ### 测试 (test)
