@@ -19,7 +19,9 @@
   "license": "BSD-3-Clause",
   "scripts": {
     "test": "node test",
-    "start": "node app"
+    "start": "node app",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "engines": {
     "node": "*"
@@ -33,10 +35,10 @@
     "debug": "^2.4.1",
     "ero": "^0.2.0",
     "humps": "^1.0.0",
-    "joi": "^6.10.0",
-    "lodash": "^3.10.1",
+    "joi": "^8.1.0",
+    "lodash": "^4.17.11",
     "lodash-deep": "^1.6.0",
-    "ms": "^0.7.1",
+    "ms": "^2.0.0",
     "node-uuid": "^1.4.6",
     "nps-log": "github:adoyle-h/nps-log#develop",
     "pretty-error": "^2.0.0",
@@ -49,7 +51,8 @@
     "walkdir": "0.0.11",
     "winston": "^2.1.0",
     "winston-pretty-console": "^0.1.1",
-    "wodule": "^0.1.0"
+    "wodule": "^0.1.0",
+    "snyk": "^1.161.1"
   },
   "devDependencies": {
     "a-gulp-license": "^2.0.0",
@@ -83,5 +86,6 @@
     "commitizen": {
       "path": "./node_modules/ad-conventional-changelog"
     }
-  }
+  },
+  "snyk": true
 }
